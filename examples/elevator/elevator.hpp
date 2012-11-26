@@ -34,15 +34,15 @@ class Elevator
    */
 public:
 
-  /* default reaction for unwanted events */
+  /* default reaction for unhandled events */
   void react(tinyfsm::Event const &) { };
 
   virtual void react(Call        const &);
   virtual void react(FloorSensor const &);
   virtual void react(Alarm       const &) final;
 
-  virtual void entry(void) { };
-  void         exit(void)  { }; /* no exit actions */
+  virtual void entry(void) { };  /* entry actions in some states */
+  void         exit(void)  { };  /* no exit actions */
 
 protected:
 

@@ -27,7 +27,8 @@ class Motor
    */
 public:
 
-  void react(tinyfsm::Event const &) { };    /* default reaction (unwanted events) */
+  /* default reaction for unhandled events */
+  void react(tinyfsm::Event const &) { };
 
   /* non-virtual declaration: reactions are the same for all states */
   void react(MotorUp   const &);
@@ -35,7 +36,7 @@ public:
   void react(MotorStop const &);
 
   virtual void entry(void) = 0;  /* pure virtual: enforce implementation in all states */
-  void exit(void)  { };
+  void exit(void)  { };          /* no exit actions */
 
 protected:
 

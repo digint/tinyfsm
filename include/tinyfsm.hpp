@@ -36,26 +36,25 @@ namespace tinyfsm
   struct FsmList<>
   {
     template<typename E>
-    static void dispatch(E const &) { }
     static void start() { }
+    static void dispatch(E const &) { }
   };
 
   template<typename F, typename... FF>
   struct FsmList<F, FF...>
   {
-    template<typename E>
-    static void dispatch(E const & event) {
-      // DBG("*** FsmList::dispatch() *** " << __PRETTY_FUNCTION__);
-      F::template dispatch<E>(event);
-      FsmList<FF...>::template dispatch<E>(event);
-    }
-
     static void start() {
       // DBG("*** FsmList::start() *** " << __PRETTY_FUNCTION__);
       F::start();
       FsmList<FF...>::start();
     }
 
+    template<typename E>
+    static void dispatch(E const & event) {
+      // DBG("*** FsmList::dispatch() *** " << __PRETTY_FUNCTION__);
+      F::template dispatch<E>(event);
+      FsmList<FF...>::template dispatch<E>(event);
+    }
   };
 
   // --------------------------------------------------------------------------
@@ -66,8 +65,6 @@ namespace tinyfsm
 
   namespace experimental
   {
-    // this works, but static_cast<> can have ugly side-effects
-
     /**
      * Event which is bound to a Fsm or FsmList class. A BoundEvent
      * implements non-template dispatch() function, which will send
@@ -78,6 +75,9 @@ namespace tinyfsm
      * BoundEvent<FsmList> introduces circular dependency to
      * the Fsm<> class (which is again part of the FsmList<> template
      * parameter).
+     *
+     * NOTE: BoundEvent uses static_cast<>, which can have ugly
+     * side-effects if not used correctly!
      */
     template<typename E, typename L>
     struct BoundEvent
@@ -188,7 +188,7 @@ namespace tinyfsm
   };
 
 
-  /* current-state pointer instances definition
+  /* current_state pointer instances definition
    *
    * NOTE: The 'initial_state' static member variable must be defined
    *       for every FSM. This can be done by the FSM_INITIAL_STATE macro.
