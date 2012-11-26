@@ -35,8 +35,9 @@ namespace tinyfsm
   template<>
   struct FsmList<>
   {
-    template<typename E>
     static void start() { }
+
+    template<typename E>
     static void dispatch(E const &) { }
   };
 
@@ -155,9 +156,9 @@ namespace tinyfsm
       current_state->entry();
     }
 
-    template<typename S, typename ConditionFunction, typename ActionFunction>
-    void transit(ConditionFunction condition_function, ActionFunction action_function) {
-      // DBG("*** Fsm::transit<S, ConditionFunction, ActionFunction>() *** " << __PRETTY_FUNCTION__);
+    template<typename S, typename ActionFunction, typename ConditionFunction>
+    void transit(ActionFunction action_function, ConditionFunction condition_function) {
+      // DBG("*** Fsm::transit<S, ActionFunction, ConditionFunction>() *** " << __PRETTY_FUNCTION__);
 
       // TODO: consider asserting is_integral<> (less restrictive), since all integral types quietly convert to bool
       static_assert(std::is_same<typename std::result_of<ConditionFunction()>::type, bool>::value,
