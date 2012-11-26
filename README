@@ -1,0 +1,89 @@
+                               TinyFSM
+
+                             Version 0.10
+
+                            November 2012
+
+Copyright (C) 2012 Axel Burri.  All Rights Reserved.
+
+
+INSTALLATION
+------------
+
+TinyFSM is an header-only library, no special installation steps are
+needed. Just point your compiler to the "include" directory.
+
+
+DESCRIPTION
+-----------
+
+TinyFSM is a simple and fast finite state machine library for C++. It
+allows flexible modelling of state machines:
+
+- Entry/exit actions
+- Event actions
+- Transition functions
+- Transition conditions
+- Event classes (payload, member functions)
+- Inheritance of action functions
+
+Its simplicity and speed makes TinyFSM ideal for real-time operating
+systems. In the best case, dispatching an event has a performance
+footprint equal to calling (or inlining) a function. In the worst case,
+dispatching leads to a single vtable lookup and function call.
+
+TinyFSM benefits from the C++11 template metaprogramming features like
+variadic templates, and does not depend on RTTI, exceptions or any
+external library.
+
+
+DOCUMENTATION
+-------------
+
+The main documentation is located in the "doc" directory.
+
+The documentation is also available in HTML format on the TinyFSM
+project page:
+
+    http://www.digint.ch/tinyfsm
+
+
+DEVELOPMENT
+-----------
+
+The source code for TinyFSM is managed using Git. Check out the source
+like this:
+
+    $ git clone git://dev.tty0.ch/tinyfsm.git
+
+
+SUPPORT
+-------
+
+If you need further information or find bugs, please contact the
+author.
+
+
+AUTHOR
+------
+
+Axel Burri <axel@tty0.ch>
+
+
+COPYRIGHT AND LICENSE
+---------------------
+
+Copyright (C) 2012 Axel Burri. All rights reserved.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or (at
+your option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.

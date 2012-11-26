@@ -1,0 +1,21 @@
+Introduction
+============
+
+TinyFSM is a simple and fast finite state machine library for
+C++. It allows flexible modelling of state machines:
+
+- Entry/exit actions
+- Event actions
+- Transition functions
+- Transition conditions
+- Events with payload
+- Inheritance of action functions
+
+Its simplicity and speed makes TinyFSM ideal for real-time operating
+systems. In the best case, dispatching an event has a performance
+footprint equal to calling (or inlining) a function. In the worst case,
+dispatching leads to a single vtable lookup and function call.
+
+TinyFSM benefits from the C++11 template metaprogramming features like
+variadic templates, and does not depend on RTTI, exceptions or any
+external library.

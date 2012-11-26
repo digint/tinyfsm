@@ -1,0 +1,17 @@
+Development
+===========
+
+Source Code Repository
+----------------------
+
+The source code for TinyFSM is managed using Git. Check out the source
+like this:
+
+    git clone git://dev.tty0.ch/tinyfsm.git
+
+
+How to Contribute
+-----------------
+
+Your contributions are welcome! Please contact the author if you'd
+like to make some changes or found bugs.

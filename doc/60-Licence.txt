@@ -1,0 +1,14 @@
+License
+=======
+
+FileWiki is free software, available under the [GNU General Public
+License, Version 3][GPLv3].
+
+  [GPLv3]: http://www.gnu.org/licenses/gpl.html
+
+
+If you are using FileWiki, you are encouraged to put a
+"Powered By FileWiki" [badge] on your web site, pointing back to
+<http://www.digint.ch/filewiki>.
+
+  [badge]: http://www.digint.ch/download/filewiki/img/filewiki_badge.png

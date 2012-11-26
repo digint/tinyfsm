@@ -1,0 +1,111 @@
+API Reference
+=============
+
+`#include <tinyfsm.hpp>`
+
+
+Class Diagram
+-------------
+                                    .......               
+    +-------------------------------:  T  :
+    | tinyfsm::FsmList              :.....:
+    +----------------------------------|
+    | +start()                         |
+    | +dispatch(Event)                 |
+    +----------------------------------+
+
+
+                                    .......               
+    +-------------------------------:  T  :
+    | tinyfsm::Fsm                  :.....:
+    +----------------------------------|
+    | +start()                         |
+    | +dispatch(Event)                 |
+    | +get_current_state()             |
+    | #transit<S>()                    |
+    | #transit<S>(Action)              |
+    | #transit<S>(Action, Condition)   |
+    +----------------------------------+
+                     #
+                     |
+                     |
+             +---------------+
+             | MyFSM         |
+             +---------------+
+             | entry()       |
+             | exit()        |
+             | react(EventX) |
+             | react(EventY) |
+             | ...           |
+             +---------------+
+                     #
+                     |
+         +-----------+------------+
+         |           |            |
+    +---------+   +---------+  +---------+
+    | State_A |   | State_B |  | ...     |
+    +---------+   +---------+  +---------+
+
+
+    #  protected
+    +  public
+    -  private
+
+
+template< typename F > class Fsm
+--------------------------------
+
+- `static void start()`
+
+  Calls the entry action of the initial state.
+
+
+- `template< typename E > static void dispatch(E const &)`
+
+  Dispatch an event to the current state of this state machine.
+
+
+- `static F const * get_current_state(void)`
+
+  Returns a pointer to the current state.
+
+
+- `template< typename S > void transit(void)`
+
+  Transit to a new state:
+
+  1. Call exit() method on current state
+  2. Set new current state to S
+  3. Call entry() method on new state
+
+
+- `template< typename S, typename ActionFunction > void transit(ActionFunction)`
+
+  Transit to a new state, with action function:
+
+  1. Call exit() method on current state
+  2. Call ActionFunction
+  3. Set new current state to S
+  4. Call entry() method on new state
+
+
+- `template< typename S, typename ActionFunction, typename ConditionFunction > void transit(ActionFunction, ConditionFunction)`
+
+  Calls ConditionFunction. If it returns true, calls transit< S >(ActionFunction).
+
+
+
+
+template< typename... FF > FsmList
+----------------------------------
+
+- `static void start()`
+
+  Calls the entry action of all the state machines in the list.
+
+
+- `template<typename E> static void dispatch(E const &)`
+
+  Dispatch an event to the current state of all the state machines in
+  the list.
+
