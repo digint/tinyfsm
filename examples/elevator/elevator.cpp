@@ -72,7 +72,7 @@ class Idle
     send_event(MotorStop());
   }
 
-  void react(Call  const & e) override {
+  void react(Call const & e) override {
     dest_floor = e.floor;
 
     if(dest_floor == current_floor)
@@ -88,10 +88,6 @@ class Idle
 
     transit<Moving>(action);
   };
-
-#if 0 /* Alarm reaction is marked final, so this results in an compile error: */
-  void react(Alarm  const & e) override {  };
-#endif
 };
 
 

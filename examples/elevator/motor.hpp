@@ -36,7 +36,7 @@ public:
   void react(MotorStop const &);
 
   virtual void entry(void) = 0;  /* pure virtual: enforce implementation in all states */
-  void exit(void)  { };          /* no exit actions */
+  void exit(void)  { };          /* no exit actions at all */
 
 protected:
 

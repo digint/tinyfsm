@@ -39,10 +39,10 @@ public:
 
   virtual void react(Call        const &);
   virtual void react(FloorSensor const &);
-  virtual void react(Alarm       const &) final;
+  void         react(Alarm       const &);
 
   virtual void entry(void) { };  /* entry actions in some states */
-  void         exit(void)  { };  /* no exit actions */
+  void         exit(void)  { };  /* no exit actions at all */
 
 protected:
 
