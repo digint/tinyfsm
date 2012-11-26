@@ -1,7 +1,7 @@
 #
 # Make sure to use a compiler which implements all c++11 features!
 #
-#CROSS = /opt/toolchain/x86_64-pc-linux-gnu-gcc-4.7.0/bin/x86_64-pc-linux-gnu-
+CROSS = /opt/toolchain/x86_64-pc-linux-gnu-gcc-4.7.0/bin/x86_64-pc-linux-gnu-
 
 PROJECT      = elevator
 

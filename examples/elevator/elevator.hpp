@@ -26,7 +26,13 @@ struct Alarm       : tinyfsm::Event { };
 class Elevator
 : public tinyfsm::Fsm<Elevator>
 {
-  friend class Fsm;
+  /* NOTE: react(), entry() and exit() functions need to be accessible
+   * from tinyfsm::Fsm class. You might as well declare friendship to
+   * tinyfsm::Fsm, and make these functions private:
+   *
+   * friend class Fsm;
+   */
+public:
 
   /* default reaction for unwanted events */
   void react(tinyfsm::Event const &) { };

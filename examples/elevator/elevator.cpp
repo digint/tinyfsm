@@ -89,8 +89,7 @@ class Idle
     transit<Moving>(action);
   };
 
-#if 0
-  /* NOTE: Alarm reaction is marked final, so this results in an compile error: */
+#if 0 /* Alarm reaction is marked final, so this results in an compile error: */
   void react(Alarm  const & e) override {  };
 #endif
 };

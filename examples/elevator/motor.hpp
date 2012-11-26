@@ -19,10 +19,17 @@ struct MotorStop : tinyfsm::Event { };
 class Motor
 : public tinyfsm::Fsm<Motor>
 {
-  friend class Fsm;
+  /* NOTE: react(), entry() and exit() functions need to be accessible
+   * from tinyfsm::Fsm class. You might as well declare friendship to
+   * tinyfsm::Fsm, and make these functions private:
+   *
+   * friend class Fsm;
+   */
+public:
 
   void react(tinyfsm::Event const &) { };    /* default reaction (unwanted events) */
 
+  /* non-virtual declaration: reactions are the same for all states */
   void react(MotorUp   const &);
   void react(MotorDown const &);
   void react(MotorStop const &);
