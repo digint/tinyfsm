@@ -33,7 +33,7 @@ events.
 ----------------------------------
 
 Declare your state machine class. State machines are classes derived
-from the tinyfsm::Fsm<T> template class, where T is the type name of
+from the tinyfsm::Fsm< T > template class, where T is the type name of
 the state machine itself.
 
 You need to declare the following public members:
@@ -61,9 +61,10 @@ Example:
 
 Note that you are free to declare the methods non-virtual if you
 like. This has implications on the execution speed: In the example
-above, the react(Alarm) method is declared non-virtual, which makes
-the code execution faster when dispatching the "Alarm" event (no
-vtable lookup needed).
+above, the react(Alarm) method is declared non-virtual, as all states
+share the same reaction for this event. This makes code execution
+faster when dispatching the "Alarm" event, since no vtable lookup is
+needed.
 
 
 3. Declare the States
