@@ -1,0 +1,7 @@
+Installation
+============
+
+TinyFSM is an header-only library, no special installation steps are
+needed. Just point your compiler to the "include" directory, and:
+
+    #include <tinyfsm.hpp>
