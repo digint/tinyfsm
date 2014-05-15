@@ -13,5 +13,8 @@ like this:
 How to Contribute
 -----------------
 
-Your contributions are welcome! Please contact the author if you'd
-like to make some changes or found bugs.
+Your contributions are welcome!
+
+If you would like to contribute or found bugs, visit the [TinyFSM
+project page on GitHub] (http://github.com/digint/tinyfsm), or
+contact the author via email.

@@ -1,21 +1,5 @@
-                               TinyFSM
-
-                             Version 0.10
-
-                            November 2012
-
-Copyright (C) 2012 Axel Burri.  All Rights Reserved.
-
-
-INSTALLATION
-------------
-
-TinyFSM is an header-only library, no special installation steps are
-needed. Just point your compiler to the "include" directory.
-
-
-DESCRIPTION
------------
+TinyFSM
+=======
 
 TinyFSM is a simple finite state machine library for C++, designed for
 optimal performance and low memory footprint. This makes it ideal for
@@ -43,24 +27,36 @@ variadic templates, and does not depend on RTTI, exceptions or any
 external library.
 
 
+Official home page: <http://www.digint.ch/tinyfsm>
+
+Current version: `0.10`
+
+
 DOCUMENTATION
 -------------
 
-The main documentation is located in the "doc" directory.
+You can find the main documentation in the `doc/` directory of the
+TinyFSM project. The latest version is also available [online]
+(http://www.digint.ch/tinyfsm/doc/introduction.html).
 
-The documentation is also available in HTML format on the TinyFSM
-project page:
 
-    http://www.digint.ch/tinyfsm
+INSTALLATION
+------------
+
+TinyFSM is a header-only library, no special installation steps are
+needed. Just point your compiler to the "include" directory.
 
 
 DEVELOPMENT
 -----------
 
-The source code for TinyFSM is managed using Git. Check out the source
-like this:
+The source code for TinyFSM is managed using Git. Check out the
+source repository like this:
 
-    $ git clone git://dev.tty0.ch/tinyfsm.git
+    git clone git://dev.tty0.ch/tinyfsm.git
+
+If you would like to contribute, you might want to visit the [TinyFSM
+project page on GitHub] (http://github.com/digint/tinyfsm).
 
 
 SUPPORT
