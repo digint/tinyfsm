@@ -27,7 +27,7 @@ variadic templates, and does not depend on RTTI, exceptions or any
 external library.
 
 
-Official home page: <http://www.digint.ch/tinyfsm>
+Official home page: <http://digint.ch/tinyfsm>
 
 Current version: `0.10`
 
@@ -36,8 +36,8 @@ DOCUMENTATION
 -------------
 
 You can find the main documentation in the `doc/` directory of the
-TinyFSM project. The latest version is also available [online]
-(http://www.digint.ch/tinyfsm/doc/introduction.html).
+TinyFSM project. The latest version is also available
+[online](http://digint.ch/tinyfsm/doc/introduction.html).
 
 
 INSTALLATION
@@ -56,7 +56,7 @@ source repository like this:
     git clone git://dev.tty0.ch/tinyfsm.git
 
 If you would like to contribute, you might want to visit the [TinyFSM
-project page on GitHub] (http://github.com/digint/tinyfsm).
+project page on GitHub](http://github.com/digint/tinyfsm).
 
 
 SUPPORT
