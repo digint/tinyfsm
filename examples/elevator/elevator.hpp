@@ -51,4 +51,7 @@ protected:
 };
 
 
+/* declare template specialization */
+template<> Elevator::state_ptr_t Elevator::type::current_state;
+
 #endif

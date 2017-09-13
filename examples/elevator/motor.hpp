@@ -47,4 +47,7 @@ public:
 };
 
 
+/* declare template specialization */
+template<> Motor::state_ptr_t Motor::type::current_state;
+
 #endif

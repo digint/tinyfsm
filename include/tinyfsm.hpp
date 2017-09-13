@@ -113,6 +113,7 @@ namespace tinyfsm
   template<typename F>     /* FSM base class  */
   class Fsm
   {
+    typedef Fsm<F> type;
     typedef F *       state_ptr_t;
     typedef F const * state_ptr_const_t;
 

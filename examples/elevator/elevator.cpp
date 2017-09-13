@@ -114,4 +114,5 @@ int Elevator::dest_floor = 0;
 // ----------------------------------------------------------------------------
 // Initial state definition
 //
-FSM_INITIAL_STATE(Elevator, Idle);
+template<> Elevator::state_ptr_t Elevator::type::current_state = Elevator::state_ptr<Idle>();
+//FSM_INITIAL_STATE(Elevator, Idle);
