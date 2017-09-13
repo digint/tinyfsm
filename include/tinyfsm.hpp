@@ -35,24 +35,28 @@ namespace tinyfsm
   template<>
   struct FsmList<>
   {
-    static void start() { }
+    static void start() {
+      // DBG("*** FsmList::start() - size=0 *** " << __PRETTY_FUNCTION__);
+    }
 
     template<typename E>
-    static void dispatch(E const &) { }
+    static void dispatch(E const &) {
+      // DBG("*** FsmList::dispatch() - size=0 *** " << __PRETTY_FUNCTION__);
+    }
   };
 
   template<typename F, typename... FF>
   struct FsmList<F, FF...>
   {
     static void start() {
-      // DBG("*** FsmList::start() *** " << __PRETTY_FUNCTION__);
+      // DBG("*** FsmList::start() - size=" << (sizeof...(FF) + 1) << " *** " << __PRETTY_FUNCTION__);
       F::start();
       FsmList<FF...>::start();
     }
 
     template<typename E>
     static void dispatch(E const & event) {
-      // DBG("*** FsmList::dispatch() *** " << __PRETTY_FUNCTION__);
+      // DBG("*** FsmList::dispatch() - size=" << (sizeof...(FF) + 1) << " *** " << __PRETTY_FUNCTION__);
       F::template dispatch<E>(event);
       FsmList<FF...>::template dispatch<E>(event);
     }
@@ -131,20 +135,14 @@ namespace tinyfsm
     template<typename S>
     void transit(void) {
       // DBG("*** Fsm::transit<S>() *** " << __PRETTY_FUNCTION__);
-
       current_state->exit();
       current_state = state_ptr<S>();
       current_state->entry();
-
-      // TODO: check why this produces different code (obviously this is the same).
-      //       Is gcc not able to detect a dereference-after-reference identity?
-      //    _state_instance<F, S>::value.entry();
     }
 
     template<typename S, typename ActionFunction>
     void transit(ActionFunction action_function) {
       // DBG("*** Fsm::transit<S, ActionFunction>() *** " << __PRETTY_FUNCTION__);
-
       static_assert(std::is_void<typename std::result_of<ActionFunction()>::type >::value,
                     "result type of 'action_function()' is not 'void'");
 
@@ -159,8 +157,6 @@ namespace tinyfsm
     template<typename S, typename ActionFunction, typename ConditionFunction>
     void transit(ActionFunction action_function, ConditionFunction condition_function) {
       // DBG("*** Fsm::transit<S, ActionFunction, ConditionFunction>() *** " << __PRETTY_FUNCTION__);
-
-      // TODO: consider asserting is_integral<> (less restrictive), since all integral types quietly convert to bool
       static_assert(std::is_same<typename std::result_of<ConditionFunction()>::type, bool>::value,
                     "result type of 'condition_function()' is not 'bool'");
 
