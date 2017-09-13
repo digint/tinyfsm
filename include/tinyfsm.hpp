@@ -116,9 +116,11 @@ namespace tinyfsm
     typedef F *       state_ptr_t;
     typedef F const * state_ptr_const_t;
 
-    static state_ptr_t        current_state;
-    static state_ptr_t const  initial_state;
 
+    /* NOTE: The 'current_state' static member variable must be defined
+     *       for every FSM. This can be done by the FSM_INITIAL_STATE macro.
+     */
+    static state_ptr_t current_state;
 
     template<typename S>
     static constexpr state_ptr_t state_ptr(void) {
@@ -184,20 +186,13 @@ namespace tinyfsm
     }
   };
 
+} /* namespace tinyfsm */
 
-  /* current_state pointer instances definition
-   *
-   * NOTE: The 'initial_state' static member variable must be defined
-   *       for every FSM. This can be done by the FSM_INITIAL_STATE macro.
-   */
-  template<typename F>
-  typename Fsm<F>::state_ptr_t Fsm<F>::current_state = Fsm<F>::initial_state;
 
+/** Initialize (define) "current_state" to _STATE for _FSM (explicit template specialization) */
 #define FSM_INITIAL_STATE(_FSM, _STATE)                                 \
   template<>                                                            \
-  _FSM::state_ptr_t const _FSM::Fsm::initial_state = _FSM::state_ptr<_STATE>()
+  tinyfsm::Fsm<_FSM>::state_ptr_t tinyfsm::Fsm<_FSM>::current_state = tinyfsm::Fsm<_FSM>::state_ptr<_STATE>()
 
-
-} /* namespace tinyfsm */
 
 #endif /* TINYFSM_HPP_INCLUDED */
