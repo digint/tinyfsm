@@ -33,8 +33,8 @@ events.
 ----------------------------------
 
 Declare your state machine class. State machines are classes derived
-from the tinyfsm::Fsm< T > template class, where T is the type name of
-the state machine itself.
+from the tinyfsm::Fsm template class, where T is the type name of the
+state machine itself.
 
 You need to declare the following public members:
 
@@ -111,11 +111,11 @@ steps:
 - Transit to different state
 
 **Important**:
-Make sure that the transit<>() function is the last command executed
-within a reaction method!
+Make sure that the `transit<>()` function call is the last command
+executed within a reaction method!
 
 **Important**:
-Don't use transit<>() in entry/exit actions!
+Don't use `transit<>()` in entry/exit actions!
 
 Example:
 
@@ -142,21 +142,21 @@ Example:
 
 
 In this example, we use a lambda function as transition action. The
-transit<NewState>() method does the following:
+`transit<>()` method does the following:
 
 1. Call the exit() method of the current state
 2. Call the the transition action if provided
 3. Change the current state to the new state
 4. Call the entry() method of the new state
 
-Note that you can also pass condition functions to the transit<>()
+Note that you can also pass condition functions to the `transit<>()`
 method.
 
 
 5. Define the Initial State
 ---------------------------
 
-Use the macro FSM_INITIAL_STATE(fsm, state) for defining the initial
+Use the macro `FSM_INITIAL_STATE(fsm, state)` for defining the initial
 state of your state machine:
 
 Example:
@@ -165,8 +165,8 @@ Example:
 
 This sets the current state of the "Elevator" state machine to "Idle".
 More specifially, it defines the static member function
-Fsm<Elevator>::initialize() to call enter<Idle>() (which calls entry()
-after setting the current state to Idle).
+`Fsm<Elevator>::initialize()` to call `enter<Idle>()` (which calls
+entry() after setting the current state to Idle).
 
 If you don't want the entry() method to be called on startup, or need
 to perform some other initialization, you can as well define the

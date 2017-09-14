@@ -60,9 +60,9 @@ template< typename F > class Fsm
 - `static void initialize(void)`
 
   Function prototype, must be defined (template specialization) for
-  every state machine class (e.g. by using the FSM_INITIAL_STATE(fsm,
-  state) macro). Must at least call either enter<S>() or
-  set_current_state<S>().
+  every state machine class (e.g. by using the `FSM_INITIAL_STATE(fsm,
+  state`) macro). Must at least call either `enter<S>()` or
+  `set_current_state<S>()`.
 
 
 - `template< typename E > static void dispatch(E const &)`
@@ -110,7 +110,8 @@ template< typename F > class Fsm
 
 - `template< typename S, typename ActionFunction, typename ConditionFunction > void transit(ActionFunction, ConditionFunction)`
 
-  Calls ConditionFunction. If it returns true, calls transit< S >(ActionFunction).
+  Calls ConditionFunction. If it returns true, calls
+  `transit<S>(ActionFunction)`.
 
 
 template< typename... FF > FsmList
@@ -121,7 +122,7 @@ template< typename... FF > FsmList
   Calls initialize() function of all the state machines in the list.
 
 
-- `template<typename E> static void dispatch(E const &)`
+- `template< typename E > static void dispatch(E const &)`
 
   Dispatch an event to the current state of all the state machines in
   the list.

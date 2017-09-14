@@ -32,7 +32,7 @@ Official home page: <http://digint.ch/tinyfsm>
 Current version: `0.10`
 
 
-DOCUMENTATION
+Documentation
 -------------
 
 You can find the main documentation in the `doc/` directory of the
@@ -40,14 +40,14 @@ TinyFSM project. The latest version is also available
 [online](http://digint.ch/tinyfsm/doc/introduction.html).
 
 
-INSTALLATION
+Installation
 ------------
 
 TinyFSM is a header-only library, no special installation steps are
 needed. Just point your compiler to the "include" directory.
 
 
-DEVELOPMENT
+Development
 -----------
 
 The source code for TinyFSM is managed using Git. Check out the
@@ -55,24 +55,22 @@ source repository like this:
 
     git clone git://dev.tty0.ch/tinyfsm.git
 
-If you would like to contribute, you might want to visit the [TinyFSM
-project page on GitHub](http://github.com/digint/tinyfsm).
+If you would like to contribute or have found bugs, visit the [TinyFSM
+project page on GitHub] and use the [issues tracker] there.
+
+  [TinyFSM project page on GitHub]: http://github.com/digint/tinyfsm
+  [issues tracker]: http://github.com/digint/tinyfsm/issues
 
 
-SUPPORT
+Contact
 -------
 
-If you need further information or find bugs, please contact the
-author.
+For questions and suggestions regarding TinyFSM, success or failure
+stories, and any other kind of feedback, please feel free to contact
+the author (the email address can be found in the sources).
 
 
-AUTHOR
-------
-
-Axel Burri <axel@tty0.ch>
-
-
-LICENSE
+License
 -------
 
 TinyFSM is [Open Source] software. It may be used for any purpose,
