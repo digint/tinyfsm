@@ -1,7 +1,7 @@
 /*
  * TinyFSM - Tiny Finite State Machine Processor
  *
- * Copyright 2012 Axel Burri <axel@tty0.ch>
+ * Copyright (C) 2012-2017 Axel Burri <axel@tty0.ch>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ namespace tinyfsm
   {
     static void start() {
       // DBG("*** FsmList::start() - size=" << (sizeof...(FF) + 1) << " *** " << __PRETTY_FUNCTION__);
-      F::start();
+      F::initialize();
       FsmList<FF...>::start();
     }
 
@@ -116,16 +116,26 @@ namespace tinyfsm
     typedef F *       state_ptr_t;
     typedef F const * state_ptr_const_t;
 
-
-    /* NOTE: The 'current_state' static member variable must be defined
-     *       for every FSM. This can be done by the FSM_INITIAL_STATE macro.
-     */
     static state_ptr_t current_state;
 
     template<typename S>
     static constexpr state_ptr_t state_ptr(void) {
       return &_state_instance<F, S>::value;
     }
+
+    template<typename S>
+    static void enter(void) {
+      // DBG("*** Fsm::enter() *** " << __PRETTY_FUNCTION__);
+      current_state = state_ptr<S>();
+      current_state->entry();
+    }
+
+    template<typename S>
+    static void set_current_state(void) {
+      // DBG("*** Fsm::enter() *** " << __PRETTY_FUNCTION__);
+      current_state = state_ptr<S>();
+    }
+
 
   protected:
 
@@ -170,10 +180,7 @@ namespace tinyfsm
 
   public:
 
-    static void start(void) {
-      // DBG("*** Fsm::start() *** " << __PRETTY_FUNCTION__);
-      current_state->entry();
-    }
+    static void initialize(void);
 
     template<typename E>
     static void dispatch(E const & event) {
@@ -186,13 +193,18 @@ namespace tinyfsm
     }
   };
 
+  template<typename F>
+  typename Fsm<F>::state_ptr_t Fsm<F>::current_state;
+
 } /* namespace tinyfsm */
 
 
-/** Initialize (define) "current_state" to _STATE for _FSM (explicit template specialization) */
-#define FSM_INITIAL_STATE(_FSM, _STATE)                                 \
-  template<>                                                            \
-  tinyfsm::Fsm<_FSM>::state_ptr_t tinyfsm::Fsm<_FSM>::current_state = tinyfsm::Fsm<_FSM>::state_ptr<_STATE>()
+#define FSM_INITIAL_STATE(_FSM, _STATE)          \
+namespace tinyfsm {                              \
+  template<> void Fsm<_FSM>::initialize(void) {  \
+    enter<_STATE>();                             \
+  }                                              \
+}
 
 
 #endif /* TINYFSM_HPP_INCLUDED */

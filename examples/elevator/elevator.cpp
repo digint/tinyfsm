@@ -114,4 +114,4 @@ int Elevator::dest_floor = 0;
 // ----------------------------------------------------------------------------
 // Initial state definition
 //
-FSM_INITIAL_STATE(Elevator, Idle);
+FSM_INITIAL_STATE(Elevator, Idle)

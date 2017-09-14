@@ -60,4 +60,4 @@ int Motor::direction{0};
 // ----------------------------------------------------------------------------
 // Initial state definition
 //
-FSM_INITIAL_STATE(Motor, Stopped);
+FSM_INITIAL_STATE(Motor, Stopped)

@@ -161,9 +161,27 @@ state of your state machine:
 
 Example:
 
-    FSM_INITIAL_STATE(Elevator, Idle);
+    FSM_INITIAL_STATE(Elevator, Idle)
 
 This sets the current state of the "Elevator" state machine to "Idle".
+More specifially, it defines the static member function
+Fsm<Elevator>::initialize() to call enter<Idle>() (which calls entry()
+after setting the current state to Idle).
+
+If you don't want the entry() method to be called on startup, or need
+to perform some other initialization, you can as well define the
+initialize() member function.
+
+Example (no call to entry method):
+
+    template<>
+    void tinyfsm::Fsm<Elevator>::initialize(void) {
+      set_current_state<Idle>();
+      ...
+    }
+
+Make sure to always set the current state, or you'll end up with a
+null pointer dereference.
 
 
 6. Use FsmList for Event Dispatching

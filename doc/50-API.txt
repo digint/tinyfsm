@@ -6,45 +6,47 @@ API Reference
 
 Class Diagram
 -------------
-                                    .......               
-    +-------------------------------:  T  :
-    | tinyfsm::FsmList              :.....:
-    +----------------------------------|
-    | +start()                         |
-    | +dispatch(Event)                 |
-    +----------------------------------+
+                                           .......
+    +--------------------------------------:  T  :
+    | tinyfsm::FsmList                     :.....:
+    +-----------------------------------------|
+    | [+] start()                 <<static>>  |
+    | [+] dispatch(Event)         <<static>>  |
+    +-----------------------------------------+
 
 
-                                    .......               
-    +-------------------------------:  T  :
-    | tinyfsm::Fsm                  :.....:
-    +----------------------------------|
-    | +start()                         |
-    | +dispatch(Event)                 |
-    | +get_current_state()             |
-    | #transit<S>()                    |
-    | #transit<S>(Action)              |
-    | #transit<S>(Action, Condition)   |
-    +----------------------------------+
-                     #
-                     |
-                     |
-             +---------------+
-             | MyFSM         |
-             +---------------+
-             | entry()       |
-             | exit()        |
-             | react(EventX) |
-             | react(EventY) |
-             | ...           |
-             +---------------+
-                     #
-                     |
-         +-----------+------------+
-         |           |            |
-    +---------+   +---------+  +---------+
-    | State_A |   | State_B |  | ...     |
-    +---------+   +---------+  +---------+
+                                           .......
+    +--------------------------------------:  T  :
+    | tinyfsm::Fsm                         :.....:
+    +-----------------------------------------|
+    | [+] initialize()            <<static>>  |
+    | [+] dispatch(Event)         <<static>>  |
+    | [+] get_current_state()     <<static>>  |
+    | [-] enter<S>()              <<static>>  |
+    | [-] set_current_state<S>()  <<static>>  |
+    | [#] transit<S>()                        |
+    | [#] transit<S>(Action)                  |
+    | [#] transit<S>(Action, Condition)       |
+    +-----------------------------------------+
+                         #
+                         |
+                         |
+              +---------------------+
+              | MyFSM               |
+              +---------------------+
+              | [+] entry()         |
+              | [+] exit()          |
+              | [+] react(EventX)   |
+              | [+] react(EventY)   |
+              | ...                 |
+              +---------------------+
+                         #
+                         |
+           +-------------+-------------+
+           |             |             |
+      +---------+   +---------+   +---------+
+      | State_A |   | State_B |   | ...     |
+      +---------+   +---------+   +---------+
 
 
     #  protected
@@ -55,9 +57,12 @@ Class Diagram
 template< typename F > class Fsm
 --------------------------------
 
-- `static void start()`
+- `static void initialize(void)`
 
-  Calls the entry action of the initial state.
+  Function prototype, must be defined (template specialization) for
+  every state machine class (e.g. by using the FSM_INITIAL_STATE(fsm,
+  state) macro). Must at least call either enter<S>() or
+  set_current_state<S>().
 
 
 - `template< typename E > static void dispatch(E const &)`
@@ -68,6 +73,20 @@ template< typename F > class Fsm
 - `static F const * get_current_state(void)`
 
   Returns a pointer to the current state.
+
+
+- `template< typename S > static void set_current_state(void)`
+
+  Set current state to S (helper function for use in definition of
+  initialize()).
+
+
+- `template< typename S > static void enter(void)`
+
+  Helper function for use in definition of initialize():
+
+  1. Set current state to S
+  2. Call entry() method on S
 
 
 - `template< typename S > void transit(void)`
@@ -94,18 +113,15 @@ template< typename F > class Fsm
   Calls ConditionFunction. If it returns true, calls transit< S >(ActionFunction).
 
 
-
-
 template< typename... FF > FsmList
 ----------------------------------
 
 - `static void start()`
 
-  Calls the entry action of all the state machines in the list.
+  Calls initialize() function of all the state machines in the list.
 
 
 - `template<typename E> static void dispatch(E const &)`
 
   Dispatch an event to the current state of all the state machines in
   the list.
-
