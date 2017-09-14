@@ -1,2 +1,10 @@
-* tinyfsm-0.10
-  - initial revision
+tinyfsm-0.2.0
+
+  * Use Fsm<F>::initialize() for initialization (instead of
+    Fsm<F>::initial_state).
+  * Change license to MIT
+
+tinyfsm-0.1.0
+
+  * Initial revision
+  * Note that this release was originally named "v0.10"
