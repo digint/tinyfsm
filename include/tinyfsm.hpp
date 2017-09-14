@@ -22,6 +22,16 @@
  * THE SOFTWARE.
  */
 
+/* ---------------------------------------------------------------------
+ * Version: 0.2.0
+ *
+ * The official TinyFSM website is located at:
+ * http://digint.ch/tinyfsm/
+ *
+ * Author:
+ * Axel Burri <axel@tty0.ch>
+ * ---------------------------------------------------------------------
+ */
 
 #ifndef TINYFSM_HPP_INCLUDED
 #define TINYFSM_HPP_INCLUDED

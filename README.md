@@ -29,7 +29,7 @@ external library.
 
 Official home page: <http://digint.ch/tinyfsm>
 
-Current version: `0.10`
+Current version: `0.2.0`
 
 
 Documentation
