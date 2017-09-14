@@ -72,20 +72,12 @@ AUTHOR
 Axel Burri <axel@tty0.ch>
 
 
-COPYRIGHT AND LICENSE
----------------------
+LICENSE
+-------
 
-Copyright (C) 2012 Axel Burri. All rights reserved.
+TinyFSM is [Open Source] software. It may be used for any purpose,
+including commercial purposes, at absolutely no cost. It is
+distributed under the terms of the [MIT license].
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at
-your option) any later version.
-
-This program is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
+  [Open Source]: http://www.opensource.org/docs/definition.html
+  [MIT license]: http://www.opensource.org/licenses/mit-license.html
