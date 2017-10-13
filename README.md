@@ -66,6 +66,10 @@ source repository like this:
 
     git clone https://dev.tty0.ch/tinyfsm.git
 
+Mirror on GitHub:
+
+    git clone https://github.com/digint/tinyfsm.git
+
 If you would like to contribute or have found bugs, visit the [TinyFSM
 project page on GitHub] and use the [issues tracker] there.
 
