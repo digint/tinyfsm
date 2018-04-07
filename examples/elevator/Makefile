@@ -64,9 +64,9 @@ LD_FLAGS    += -fno-rtti
 #! LD_FLAGS += -frepo     # Enable automatic template instantiation at link time
 
 ifeq ($(shell uname -s),Darwin)
- export LD_FLAGS += -Wl,-dead_strip
+ LD_FLAGS += -Wl,-dead_strip
 else
- export LD_FLAGS += -Wl,--gc-sections
+ LD_FLAGS += -Wl,--gc-sections
 endif
 
 
