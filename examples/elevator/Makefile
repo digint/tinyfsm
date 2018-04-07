@@ -62,7 +62,12 @@ LD_FLAGS     = $(CPUFLAGS)
 LD_FLAGS    += -fno-exceptions
 LD_FLAGS    += -fno-rtti
 #! LD_FLAGS += -frepo     # Enable automatic template instantiation at link time
-LD_FLAGS    += -Wl,--gc-sections
+
+ifeq ($(shell uname -s),Darwin)
+ LD_FLAGS += -Wl,-dead_strip
+else
+ LD_FLAGS += -Wl,--gc-sections
+endif
 
 
 .PHONY: all clean
