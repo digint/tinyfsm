@@ -1,3 +1,4 @@
 *.o
 *.d
 simple_switch
+multiple_switch
