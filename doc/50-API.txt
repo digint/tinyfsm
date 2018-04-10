@@ -22,6 +22,7 @@ Class Diagram
     | tinyfsm::Fsm                         :.....:
     +-----------------------------------------|
     | [+] reset()                 <<static>>  |
+    | [+] start()                 <<static>>  |
     | [+] dispatch(Event)         <<static>>  |
     | [+] get_current_state()     <<static>>  |
     | [+] set_current_state<S>()  <<static>>  |
@@ -65,6 +66,12 @@ template< typename F > class Fsm
   Function prototype, must be defined (template specialization) for
   every state machine class (e.g. by using the `FSM_INITIAL_STATE(fsm,
   state`) macro). Must at least call `set_current_state<S>()`.
+
+
+- `static void start()`
+
+  1. Calls reset() method of the state machine class F.
+  2. Calls entry() method of the current (initial) state.
 
 
 - `template< typename E > static void dispatch(E const &)`

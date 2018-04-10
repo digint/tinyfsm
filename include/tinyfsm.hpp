@@ -165,6 +165,12 @@ namespace tinyfsm
 
     static void reset(void);
 
+    static void start(void) {
+      // DBG("*** Fsm::start() *** " << __PRETTY_FUNCTION__);
+      F::reset();
+      current_state->entry();
+    }
+
     template<typename E>
     static void dispatch(E const & event) {
       // DBG("*** Fsm::dispatch() *** " << __PRETTY_FUNCTION__);
