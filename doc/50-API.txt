@@ -10,6 +10,8 @@ Class Diagram
     +--------------------------------------:  T  :
     | tinyfsm::FsmList                     :.....:
     +-----------------------------------------|
+    | [+] reset()                 <<static>>  |
+    | [+] enter()                 <<static>>  |
     | [+] start()                 <<static>>  |
     | [+] dispatch(Event)         <<static>>  |
     +-----------------------------------------+
@@ -19,10 +21,11 @@ Class Diagram
     +--------------------------------------:  T  :
     | tinyfsm::Fsm                         :.....:
     +-----------------------------------------|
-    | [+] initialize()            <<static>>  |
+    | [+] reset()                 <<static>>  |
     | [+] dispatch(Event)         <<static>>  |
     | [+] get_current_state()     <<static>>  |
     | [+] set_current_state<S>()  <<static>>  |
+    | [+] enter()                 <<static>>  |
     | [+] enter<S>()              <<static>>  |
     | [#] transit<S>()                        |
     | [#] transit<S>(Action)                  |
@@ -57,12 +60,11 @@ Class Diagram
 template< typename F > class Fsm
 --------------------------------
 
-- `static void initialize(void)`
+- `static void reset(void)`
 
   Function prototype, must be defined (template specialization) for
   every state machine class (e.g. by using the `FSM_INITIAL_STATE(fsm,
-  state`) macro). Must at least call either `enter<S>()` or
-  `set_current_state<S>()`.
+  state`) macro). Must at least call `set_current_state<S>()`.
 
 
 - `template< typename E > static void dispatch(E const &)`
@@ -78,12 +80,19 @@ template< typename F > class Fsm
 - `template< typename S > static void set_current_state(void)`
 
   Set current state to S (helper function for use in definition of
-  initialize()).
+  reset()).
+
+
+- `static void enter(void)`
+
+  Helper function used by FsmList<>, should not be used directly:
+  calls entry() method of current state.
 
 
 - `template< typename S > static void enter(void)`
 
-  Helper function for use in definition of initialize():
+  Helper function, useful for bypassing FSM logic (should not be
+  needed in properly designed FSM's):
 
   1. Set current state to S
   2. Call entry() method on S
@@ -117,9 +126,20 @@ template< typename F > class Fsm
 template< typename... FF > FsmList
 ----------------------------------
 
+- `static void reset()`
+
+  Calls reset() function of all the state machines in the list.
+
+
+- `static void enter()`
+
+  Calls enter() function of all the state machines in the list.
+
+
 - `static void start()`
 
-  Calls initialize() function of all the state machines in the list.
+  1. Calls reset() function of all the state machines in the list.
+  2. Calls enter() function of all the state machines in the list.
 
 
 - `template< typename E > static void dispatch(E const &)`

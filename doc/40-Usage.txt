@@ -165,17 +165,16 @@ Example:
 
 This sets the current state of the "Elevator" state machine to "Idle".
 More specifially, it defines the static member function
-`Fsm<Elevator>::initialize()` to call `enter<Idle>()` (which calls
-entry() after setting the current state to Idle).
+`Fsm<Elevator>::reset()` to call `set_current_state<Idle>()`, which
+resets the current state to Idle.
 
-If you don't want the entry() method to be called on startup, or need
-to perform some other initialization, you can as well define the
-initialize() member function.
+If you need to perform some other initialization, you can as well
+define (explicit template specialization) the reset() member function.
 
-Example (no call to entry method):
+Example:
 
     template<>
-    void tinyfsm::Fsm<Elevator>::initialize(void) {
+    void tinyfsm::Fsm<Elevator>::reset(void) {
       set_current_state<Idle>();
       ...
     }

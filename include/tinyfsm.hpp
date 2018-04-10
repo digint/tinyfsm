@@ -49,8 +49,12 @@ namespace tinyfsm
   template<>
   struct FsmList<>
   {
-    static void start() {
-      // DBG("*** FsmList::start() - size=0 *** " << __PRETTY_FUNCTION__);
+    static void reset() {
+      // DBG("*** FsmList::reset() - size=0 *** " << __PRETTY_FUNCTION__);
+    }
+
+    static void enter() {
+      // DBG("*** FsmList::enter() - size=0 *** " << __PRETTY_FUNCTION__);
     }
 
     template<typename E>
@@ -62,10 +66,21 @@ namespace tinyfsm
   template<typename F, typename... FF>
   struct FsmList<F, FF...>
   {
+    static void reset() {
+      // DBG("*** FsmList::reset() - size=" << (sizeof...(FF) + 1) << " *** " << __PRETTY_FUNCTION__);
+      F::reset();
+      FsmList<FF...>::reset();
+    }
+
+    static void enter() {
+      // DBG("*** FsmList::enter() - size=" << (sizeof...(FF) + 1) << " *** " << __PRETTY_FUNCTION__);
+      F::enter();
+      FsmList<FF...>::enter();
+    }
+
     static void start() {
-      // DBG("*** FsmList::start() - size=" << (sizeof...(FF) + 1) << " *** " << __PRETTY_FUNCTION__);
-      F::initialize();
-      FsmList<FF...>::start();
+      reset();
+      enter();
     }
 
     template<typename E>
@@ -148,7 +163,7 @@ namespace tinyfsm
   /// state machine functions (should not be used in state class)
   public:
 
-    static void initialize(void);
+    static void reset(void);
 
     template<typename E>
     static void dispatch(E const & event) {
@@ -164,6 +179,11 @@ namespace tinyfsm
     static void set_current_state(void) {
       // DBG("*** Fsm::set_current_state() *** " << __PRETTY_FUNCTION__);
       current_state = state_ptr<S>();
+    }
+
+    static void enter(void) {
+      // DBG("*** Fsm::enter() *** " << __PRETTY_FUNCTION__);
+      current_state->entry();
     }
 
     template<typename S>
@@ -219,8 +239,8 @@ namespace tinyfsm
 
 #define FSM_INITIAL_STATE(_FSM, _STATE)          \
 namespace tinyfsm {                              \
-  template<> void Fsm<_FSM>::initialize(void) {  \
-    enter<_STATE>();                             \
+  template<> void Fsm< _FSM >::reset(void) {     \
+    set_current_state< _STATE >();               \
   }                                              \
 }
 
