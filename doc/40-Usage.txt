@@ -169,13 +169,26 @@ More specifially, it defines the static member function
 resets the current state to Idle.
 
 If you need to perform some other initialization, you can as well
-define (explicit template specialization) the reset() member function.
+define reset() member function, either as explicit template
+specialization of Fsm::reset() or directly in your state machine
+class.
 
-Example:
+Example (explicit template specialization):
 
     template<>
     void tinyfsm::Fsm<Elevator>::reset(void) {
       set_current_state<Idle>();
+      ...
+    }
+
+Example (override in state machine class):
+
+    class Elevator : public tinyfsm::Fsm<Elevator>
+    {
+      public: static void reset(void) {
+        set_current_state<Idle>();
+        ...
+      }
       ...
     }
 
