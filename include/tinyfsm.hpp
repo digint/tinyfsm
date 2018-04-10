@@ -132,9 +132,38 @@ namespace tinyfsm
 
     static state_ptr_t current_state;
 
+  protected:
+
+    template<typename S>
+    static constexpr S const & state(void) {
+      return _state_instance<F, S>::value;
+    }
+
     template<typename S>
     static constexpr state_ptr_t state_ptr(void) {
       return &_state_instance<F, S>::value;
+    }
+
+
+  /// state machine functions (should not be used in state class)
+  public:
+
+    static void initialize(void);
+
+    template<typename E>
+    static void dispatch(E const & event) {
+      // DBG("*** Fsm::dispatch() *** " << __PRETTY_FUNCTION__);
+      current_state->react(event);
+    }
+
+    static state_ptr_const_t get_current_state(void) {
+      return current_state;
+    }
+
+    template<typename S>
+    static void set_current_state(void) {
+      // DBG("*** Fsm::set_current_state() *** " << __PRETTY_FUNCTION__);
+      current_state = state_ptr<S>();
     }
 
     template<typename S>
@@ -144,19 +173,9 @@ namespace tinyfsm
       current_state->entry();
     }
 
-    template<typename S>
-    static void set_current_state(void) {
-      // DBG("*** Fsm::enter() *** " << __PRETTY_FUNCTION__);
-      current_state = state_ptr<S>();
-    }
 
-
+  /// state transition functions (for use in state class)
   protected:
-
-    template<typename S>
-    static constexpr S const & state(void) {
-      return _state_instance<F, S>::value;
-    }
 
     template<typename S>
     void transit(void) {
@@ -189,21 +208,6 @@ namespace tinyfsm
       if(condition_function()) {
         transit<S>(action_function);
       }
-    }
-
-
-  public:
-
-    static void initialize(void);
-
-    template<typename E>
-    static void dispatch(E const & event) {
-      // DBG("*** Fsm::dispatch() *** " << __PRETTY_FUNCTION__);
-      current_state->react(event);
-    }
-
-    static state_ptr_const_t get_current_state(void) {
-      return current_state;
     }
   };
 

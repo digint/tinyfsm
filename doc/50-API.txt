@@ -22,8 +22,8 @@ Class Diagram
     | [+] initialize()            <<static>>  |
     | [+] dispatch(Event)         <<static>>  |
     | [+] get_current_state()     <<static>>  |
-    | [-] enter<S>()              <<static>>  |
-    | [-] set_current_state<S>()  <<static>>  |
+    | [+] set_current_state<S>()  <<static>>  |
+    | [+] enter<S>()              <<static>>  |
     | [#] transit<S>()                        |
     | [#] transit<S>(Action)                  |
     | [#] transit<S>(Action, Condition)       |
@@ -49,9 +49,9 @@ Class Diagram
       +---------+   +---------+   +---------+
 
 
-    #  protected
-    +  public
-    -  private
+    [#]  protected
+    [+]  public
+    [-]  private
 
 
 template< typename F > class Fsm
