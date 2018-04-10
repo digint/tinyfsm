@@ -1,7 +1,6 @@
 #ifndef FSMLIST_HPP_INCLUDED
 #define FSMLIST_HPP_INCLUDED
 
-#include "debug.hpp"
 #include <tinyfsm.hpp>
 
 #include "elevator.hpp"

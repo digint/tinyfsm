@@ -3,8 +3,6 @@
 
 PROJECT      = elevator
 
-#FLAGS        = -DDEBUG
-
 # HINT: g++ -Q -O2 --help=optimizers
 OPTIMIZER    = -Os
 

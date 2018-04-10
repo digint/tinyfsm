@@ -1,4 +1,3 @@
-#include "debug.hpp"
 #include <tinyfsm.hpp>
 
 #include "elevator.hpp"

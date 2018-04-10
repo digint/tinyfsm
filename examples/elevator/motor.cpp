@@ -1,4 +1,3 @@
-#include "debug.hpp"
 #include <tinyfsm.hpp>
 #include "motor.hpp"
 #include <iostream>

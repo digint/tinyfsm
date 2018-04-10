@@ -38,6 +38,9 @@
 
 #include <type_traits>
 
+// #include <iostream>
+// #define DBG(str) do { std::cerr << str << std::endl; } while( false )
+
 namespace tinyfsm
 {
 
