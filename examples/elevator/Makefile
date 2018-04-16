@@ -12,7 +12,6 @@ AS           = $(CROSS)gcc -x assembler-with-cpp
 LD           = $(CROSS)g++
 OBJCOPY      = $(CROSS)objcopy
 OBJDUMP      = $(CROSS)objdump
-#SIZE         = $(CROSS)size -B -d
 SIZE         = size -B -d
 RM           = rm -f
 RM_R         = rm -rf
@@ -38,38 +37,48 @@ MAP          = $(PROJECT).map
 
 # commmon flags propagated to CFLAGS, CXXFLAGS, ASFLAGS (not LDFLAGS)
 FLAGS       += $(INCLUDE)
-FLAGS       += -Wa,-gdwarf-2
 FLAGS       += -MMD
 
 CXXFLAGS     = $(FLAGS)
 CXXFLAGS    += $(OPTIMIZER)
 CXXFLAGS    += -std=c++11
-CXXFLAGS    += -g
 CXXFLAGS    += -fno-exceptions
 CXXFLAGS    += -fno-rtti
 
 CXXFLAGS    += -Wall -Wextra
-CXXFLAGS    += -Winline   # see non-inlined functions
-#CXXFLAGS    += -Weffc++
 CXXFLAGS    += -Wctor-dtor-privacy
 CXXFLAGS    += -Wcast-align -Wpointer-arith -Wredundant-decls
 CXXFLAGS    += -Wshadow -Wcast-qual -Wcast-align -pedantic
 
-LD_FLAGS     = $(CPUFLAGS)
-#LD_FLAGS    += -Wl,-Map="$(MAP)",--cref
-LD_FLAGS    += -fno-exceptions
-LD_FLAGS    += -fno-rtti
-#! LD_FLAGS += -frepo     # Enable automatic template instantiation at link time
-LD_FLAGS    += -Wl,--gc-sections
+LDFLAGS     += -fno-exceptions
+LDFLAGS     += -fno-rtti
+
+# Produce debugging information (for use with gdb)
+#OPTIMIZER  = -Og
+#FLAGS     += -g
+
+# Enable link-time optimizer
+#CXXFLAGS += -flto
+#LDFLAGS  += -flto
+
+# Strip dead code (enable garbage collection)
+#OPTIMIZER += -ffunction-sections -fdata-sections
+#LDFLAGS   += -Wl,$(if $(shell ld -v | grep GNU),--gc-sections,-dead_strip)
+
+# Enable automatic template instantiation at link time
+#CXXFLAGS += -frepo
+#LDFLAGS  += -frepo
+
+# Create link map file
+#LDFLAGS  += -Wl,-Map="$(MAP)",--cref
 
 
 .PHONY: all clean
 
 all: $(EXE)
 
-
 $(EXE): $(OBJS)
-	$(LD) $(OBJS) $(LD_FLAGS) -o $(EXE)
+	$(LD) $(OBJS) $(LDFLAGS) -o $(EXE)
 	$(SIZE) $@
 
 %.o: %.cpp

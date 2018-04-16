@@ -6,7 +6,6 @@ OPTIMIZER    = -Os
 
 CC           = $(CROSS)gcc
 CXX          = $(CROSS)g++
-#SIZE         = $(CROSS)size -B -d
 SIZE         = size -B -d
 RM           = rm -f
 
@@ -25,22 +24,22 @@ EXE          = $(SRCS:.cpp=)
 #
 
 FLAGS       += $(INCLUDE)
-FLAGS       += -Wa,-gdwarf-2
 FLAGS       += -MMD
 
 CXXFLAGS     = $(FLAGS)
 CXXFLAGS    += $(OPTIMIZER)
 CXXFLAGS    += -std=c++11
-CXXFLAGS    += -g
 CXXFLAGS    += -fno-exceptions
 CXXFLAGS    += -fno-rtti
 
 CXXFLAGS    += -Wall -Wextra
-CXXFLAGS    += -Winline   # see non-inlined functions
-#CXXFLAGS    += -Weffc++
 CXXFLAGS    += -Wctor-dtor-privacy
 CXXFLAGS    += -Wcast-align -Wpointer-arith -Wredundant-decls
 CXXFLAGS    += -Wshadow -Wcast-qual -Wcast-align -pedantic
+
+# Produce debugging information (for use with gdb)
+#OPTIMIZER  = -Og
+#FLAGS     += -g
 
 
 .PHONY: all clean
