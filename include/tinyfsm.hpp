@@ -40,6 +40,7 @@
 
 // #include <iostream>
 // #define DBG(str) do { std::cerr << str << std::endl; } while( false )
+// DBG("*** dbg_example *** " << __PRETTY_FUNCTION__);
 
 namespace tinyfsm
 {
@@ -52,31 +53,22 @@ namespace tinyfsm
   template<>
   struct FsmList<>
   {
-    static void reset() {
-      // DBG("*** FsmList::reset() - size=0 *** " << __PRETTY_FUNCTION__);
-    }
-
-    static void enter() {
-      // DBG("*** FsmList::enter() - size=0 *** " << __PRETTY_FUNCTION__);
-    }
+    static void reset() { }
+    static void enter() { }
 
     template<typename E>
-    static void dispatch(E const &) {
-      // DBG("*** FsmList::dispatch() - size=0 *** " << __PRETTY_FUNCTION__);
-    }
+    static void dispatch(E const &) { }
   };
 
   template<typename F, typename... FF>
   struct FsmList<F, FF...>
   {
     static void reset() {
-      // DBG("*** FsmList::reset() - size=" << (sizeof...(FF) + 1) << " *** " << __PRETTY_FUNCTION__);
       F::reset();
       FsmList<FF...>::reset();
     }
 
     static void enter() {
-      // DBG("*** FsmList::enter() - size=" << (sizeof...(FF) + 1) << " *** " << __PRETTY_FUNCTION__);
       F::enter();
       FsmList<FF...>::enter();
     }
@@ -88,7 +80,6 @@ namespace tinyfsm
 
     template<typename E>
     static void dispatch(E const & event) {
-      // DBG("*** FsmList::dispatch() - size=" << (sizeof...(FF) + 1) << " *** " << __PRETTY_FUNCTION__);
       F::template dispatch<E>(event);
       FsmList<FF...>::template dispatch<E>(event);
     }
@@ -169,14 +160,12 @@ namespace tinyfsm
     static void reset(void);
 
     static void start(void) {
-      // DBG("*** Fsm::start() *** " << __PRETTY_FUNCTION__);
       F::reset();
       current_state->entry();
     }
 
     template<typename E>
     static void dispatch(E const & event) {
-      // DBG("*** Fsm::dispatch() *** " << __PRETTY_FUNCTION__);
       current_state->react(event);
     }
 
@@ -186,18 +175,15 @@ namespace tinyfsm
 
     template<typename S>
     static void set_current_state(void) {
-      // DBG("*** Fsm::set_current_state() *** " << __PRETTY_FUNCTION__);
       current_state = state_ptr<S>();
     }
 
     static void enter(void) {
-      // DBG("*** Fsm::enter() *** " << __PRETTY_FUNCTION__);
       current_state->entry();
     }
 
     template<typename S>
     static void enter(void) {
-      // DBG("*** Fsm::enter() *** " << __PRETTY_FUNCTION__);
       current_state = state_ptr<S>();
       current_state->entry();
     }
@@ -208,7 +194,6 @@ namespace tinyfsm
 
     template<typename S>
     void transit(void) {
-      // DBG("*** Fsm::transit<S>() *** " << __PRETTY_FUNCTION__);
       current_state->exit();
       current_state = state_ptr<S>();
       current_state->entry();
@@ -216,7 +201,6 @@ namespace tinyfsm
 
     template<typename S, typename ActionFunction>
     void transit(ActionFunction action_function) {
-      // DBG("*** Fsm::transit<S, ActionFunction>() *** " << __PRETTY_FUNCTION__);
       static_assert(std::is_void<typename std::result_of<ActionFunction()>::type >::value,
                     "result type of 'action_function()' is not 'void'");
 
@@ -230,7 +214,6 @@ namespace tinyfsm
 
     template<typename S, typename ActionFunction, typename ConditionFunction>
     void transit(ActionFunction action_function, ConditionFunction condition_function) {
-      // DBG("*** Fsm::transit<S, ActionFunction, ConditionFunction>() *** " << __PRETTY_FUNCTION__);
       static_assert(std::is_same<typename std::result_of<ConditionFunction()>::type, bool>::value,
                     "result type of 'condition_function()' is not 'bool'");
 
