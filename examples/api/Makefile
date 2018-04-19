@@ -1,5 +1,5 @@
-# Compiler prefix, in case your default compiler does not implement all c++11 features:
-#CROSS = /opt/toolchain/x86_64-pc-linux-gnu-gcc-4.7.0/bin/x86_64-pc-linux-gnu-
+# Compiler prefix, in case your default compiler does not implement all c++14 features:
+#CROSS = /opt/toolchain/x86_64-pc-linux-gnu-gcc-5.0.0/bin/x86_64-pc-linux-gnu-
 
 # HINT: g++ -Q -O2 --help=optimizers
 OPTIMIZER    = -Os
@@ -28,7 +28,7 @@ FLAGS       += -MMD
 
 CXXFLAGS     = $(FLAGS)
 CXXFLAGS    += $(OPTIMIZER)
-CXXFLAGS    += -std=c++11
+CXXFLAGS    += -std=c++14
 CXXFLAGS    += -fno-exceptions
 CXXFLAGS    += -fno-rtti
 

@@ -11,15 +11,15 @@ your source files:
 Prerequisites
 -------------
 
-Make sure you have a C++ compiler which understands the C++11 features
-(formerly known as C++0x).
+As of TinyFSM-v0.3.0, TinyFSM requires a compiler supporting the C++14
+language standard ("-std=c++14" in gcc). Earlier versions depend on
+C++11.
 
 
 Building the Elevator Example
 -----------------------------
 
-Note: if you use gcc older than 4.7, you need to change the `-std=c++11`
-flag to `-std=c++0x` in the Makefile.
+Change to the elevator example directory and compile the sources:
 
     $ cd examples/elevator
     $ make
