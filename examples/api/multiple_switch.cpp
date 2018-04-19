@@ -33,6 +33,10 @@ class DefectiveSwitch
 public:
   static constexpr unsigned int defect_level = (inum * 2);
 
+  static void reset(void) {
+    on_counter = 0;
+  }
+
   /* default reaction for unhandled events */
   void react(tinyfsm::Event const &) { };
 
@@ -119,7 +123,7 @@ int main()
   while(1)
   {
     char c;
-    std::cout << std::endl << "0,1,2=Toggle single, a=Toggle all, q=Quit ? ";
+    std::cout << std::endl << "0,1,2=Toggle single, a=Toggle all, r=Restart, q=Quit ? ";
     std::cin >> c;
     switch(c) {
     case '0': ToggleSingle<0>(); break;
@@ -128,6 +132,10 @@ int main()
     case 'a':
       std::cout << "> Toggling all switches..." << std::endl;
       fsm_handle::dispatch(toggle);
+      break;
+    case 'r':
+      fsm_handle::reset();
+      fsm_handle::start();
       break;
     case 'q':
       return 0;
