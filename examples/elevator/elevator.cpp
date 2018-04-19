@@ -106,8 +106,8 @@ void Elevator::react(Alarm const &) {
   transit<Panic>(CallFirefighters);
 }
 
-int Elevator::current_floor = 0;
-int Elevator::dest_floor = 0;
+int Elevator::current_floor = Elevator::initial_floor;
+int Elevator::dest_floor    = Elevator::initial_floor;
 
 
 // ----------------------------------------------------------------------------

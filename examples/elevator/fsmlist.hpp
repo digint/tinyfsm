@@ -6,10 +6,9 @@
 #include "elevator.hpp"
 #include "motor.hpp"
 
-typedef tinyfsm::FsmList<Motor, Elevator> fsm_list;
+using fsm_list = tinyfsm::FsmList<Motor, Elevator>;
 
-
-/* wrapper to fsm_list::dispatch() */
+/** dispatch event to both "Motor" and "Elevator" */
 template<typename E>
 void send_event(E const & event)
 {

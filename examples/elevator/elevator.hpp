@@ -46,6 +46,7 @@ public:
 
 protected:
 
+  static constexpr int initial_floor = 0;
   static int current_floor;
   static int dest_floor;
 };
