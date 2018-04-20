@@ -77,17 +77,8 @@ namespace tinyfsm
 
   // --------------------------------------------------------------------------
 
-  template<typename F, typename S>
-  struct _state_instance
-  {
-    static S value;
-    typedef S value_type;
-    typedef _state_instance<F, S> type;
-  };
-
-  /* state instance definitions */
-  template<typename F, typename S>
-  typename _state_instance<F, S>::value_type _state_instance<F, S>::value;
+  template<typename S>
+  S state_instance{};
 
   // --------------------------------------------------------------------------
 
@@ -103,12 +94,12 @@ namespace tinyfsm
 
     template<typename S>
     static constexpr S const & state(void) {
-      return _state_instance<F, S>::value;
+      return state_instance<S>;
     }
 
     template<typename S>
     static constexpr state_ptr_t state_ptr(void) {
-      return &_state_instance<F, S>::value;
+      return &state_instance<S>;
     }
 
 
