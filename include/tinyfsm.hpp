@@ -97,7 +97,7 @@ namespace tinyfsm
     typedef F *       state_ptr_t;
     typedef F const * state_ptr_const_t;
 
-    static state_ptr_t current_state;
+    static state_ptr_t current_state_ptr;
 
   protected:
 
@@ -119,31 +119,31 @@ namespace tinyfsm
 
     static void start(void) {
       F::reset();
-      current_state->entry();
+      current_state_ptr->entry();
     }
 
     template<typename E>
     static void dispatch(E const & event) {
-      current_state->react(event);
+      current_state_ptr->react(event);
     }
 
     static state_ptr_const_t get_current_state(void) {
-      return current_state;
+      return current_state_ptr;
     }
 
     template<typename S>
     static void set_current_state(void) {
-      current_state = state_ptr<S>();
+      current_state_ptr = state_ptr<S>();
     }
 
     static void enter(void) {
-      current_state->entry();
+      current_state_ptr->entry();
     }
 
     template<typename S>
     static void enter(void) {
-      current_state = state_ptr<S>();
-      current_state->entry();
+      current_state_ptr = state_ptr<S>();
+      current_state_ptr->entry();
     }
 
 
@@ -152,9 +152,9 @@ namespace tinyfsm
 
     template<typename S>
     void transit(void) {
-      current_state->exit();
-      current_state = state_ptr<S>();
-      current_state->entry();
+      current_state_ptr->exit();
+      current_state_ptr = state_ptr<S>();
+      current_state_ptr->entry();
     }
 
     template<typename S, typename ActionFunction>
@@ -162,12 +162,12 @@ namespace tinyfsm
       static_assert(std::is_void<typename std::result_of<ActionFunction()>::type >::value,
                     "result type of 'action_function()' is not 'void'");
 
-      current_state->exit();
+      current_state_ptr->exit();
       // NOTE: we get into deep trouble if the action_function sends a new event.
       // TODO: implement a mechanism to check for reentrancy
       action_function();
-      current_state = state_ptr<S>();
-      current_state->entry();
+      current_state_ptr = state_ptr<S>();
+      current_state_ptr->entry();
     }
 
     template<typename S, typename ActionFunction, typename ConditionFunction>
@@ -182,7 +182,7 @@ namespace tinyfsm
   };
 
   template<typename F>
-  typename Fsm<F>::state_ptr_t Fsm<F>::current_state;
+  typename Fsm<F>::state_ptr_t Fsm<F>::current_state_ptr;
 
   // --------------------------------------------------------------------------
 
