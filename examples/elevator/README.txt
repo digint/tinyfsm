@@ -40,9 +40,9 @@ Did you notice the motor starting twice? This is by design, let's
 have a look at the call stack of fsm_list::start() in main.cpp:
 
     FsmList<Motor, Elevator>::start()
-       Motor::reset()
+       Motor::set_initial_state()
           Motor::current_state = Stopped
-       Elevator::reset()
+       Elevator::set_initial_state()
           Elevator::current_state = Idle
        Motor::enter()
           Motor:Stopped->entry()

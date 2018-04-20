@@ -17,6 +17,8 @@ class Switch
 : public tinyfsm::Fsm<Switch>
 {
 public:
+  static void reset(void);   /* implemented below */
+
   /* default reaction for unhandled events */
   void react(tinyfsm::Event const &) { };
 
@@ -32,16 +34,31 @@ public:
 class On
 : public Switch
 {
-  void entry() override { std::cout << "* Switch is ON" << std::endl; };
+public:
+  On() : counter(0) { std::cout << "** RESET State=On" << std::endl; }
+  void entry() override { counter++; std::cout << "* Switch is ON, counter=" << counter << std::endl; };
   void react(Toggle const &) override { transit<Off>(); };
+private:
+  int counter;
 };
 
 class Off
 : public Switch
 {
-  void entry() override { std::cout << "* Switch is OFF" << std::endl; };
+public:
+  Off() : counter(0) { std::cout << "** RESET State=Off" << std::endl; }
+  void entry() override { counter++; std::cout << "* Switch is OFF, counter=" << counter << std::endl; };
   void react(Toggle const &) override { transit<On>(); };
+private:
+  int counter;
 };
+
+
+void Switch::reset() {
+  std::cout << "** RESET Switch" << std::endl;
+  // reset all states (calls constructor on all states in list)
+  tinyfsm::StateList<Off, On>::reset();
+}
 
 FSM_INITIAL_STATE(Switch, Off)
 
@@ -59,7 +76,6 @@ using fsm_handle = Switch;
 //
 int main()
 {
-  // instantiate events
   Toggle toggle;
 
   fsm_handle::start();
@@ -67,12 +83,16 @@ int main()
   while(1)
   {
     char c;
-    std::cout << std::endl << "t=Toggle, q=Quit ? ";
+    std::cout << std::endl << "t=Toggle, r=Restart, q=Quit ? ";
     std::cin >> c;
     switch(c) {
     case 't':
       std::cout << "> Toggling switch..." << std::endl;
       fsm_handle::dispatch(toggle);
+      break;
+    case 'r':
+      fsm_handle::reset();
+      fsm_handle::start();
       break;
     case 'q':
       return 0;

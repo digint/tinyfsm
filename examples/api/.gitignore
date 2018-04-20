@@ -1,4 +1,5 @@
 *.o
 *.d
 simple_switch
+resetting_switch
 multiple_switch

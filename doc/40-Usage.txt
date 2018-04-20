@@ -157,36 +157,33 @@ method.
 ---------------------------
 
 Use the macro `FSM_INITIAL_STATE(fsm, state)` for defining the initial
-state of your state machine:
+state (or "start state") of your state machine:
 
 Example:
 
     FSM_INITIAL_STATE(Elevator, Idle)
 
 This sets the current state of the "Elevator" state machine to "Idle".
-More specifially, it defines the static member function
-`Fsm<Elevator>::reset()` to call `set_current_state<Idle>()`, which
-resets the current state to Idle.
+More specifially, it defines a template specialization for
+`Fsm<Elevator>::set_initial_state()`, setting the current state to
+Idle.
 
-If you need to perform some other initialization, you can as well
-define reset() member function, either as explicit template
-specialization of Fsm::reset() or directly in your state machine
-class.
 
-Example (explicit template specialization):
+6. Define Custom Initialization
+-------------------------------
 
-    template<>
-    void tinyfsm::Fsm<Elevator>::reset(void) {
-      set_current_state<Idle>();
-      ...
-    }
+If you need to perform custom initialization, you can override the
+reset() member function in your state machine class. If you are using
+state variables, you can re-instantiate your states by calling
+`tinyfsm::StateList<MyStates...>::reset()`.
 
-Example (override in state machine class):
+Example:
 
-    class Elevator : public tinyfsm::Fsm<Elevator>
+    class Switch : public tinyfsm::Fsm<Switch>
     {
       public: static void reset(void) {
-        set_current_state<Idle>();
+        tinyfsm::StateList<Off, On>::reset();  // reset all states
+        myvar = 0;
         ...
       }
       ...
@@ -196,7 +193,7 @@ Make sure to always set the current state, or you'll end up with a
 null pointer dereference.
 
 
-6. Use FsmList for Event Dispatching
+7. Use FsmList for Event Dispatching
 ------------------------------------
 
 You might have noticed some calls to a send_event() function in the

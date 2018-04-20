@@ -85,27 +85,35 @@ namespace tinyfsm
   template<typename F>
   class Fsm
   {
-    typedef F *       state_ptr_t;
-    typedef F const * state_ptr_const_t;
+  public:
+
+    using fsmtype = Fsm<F>;
+    using state_ptr_t = F *;
 
     static state_ptr_t current_state_ptr;
 
-  protected:
-
     template<typename S>
     static constexpr S const & state(void) {
+      static_assert(std::is_same< fsmtype, typename S::fsmtype >::value,
+                    "accessing state of different state machine");
       return state_instance<S>;
     }
 
-
-  /// state machine functions (should not be used in state class)
+  /// state machine functions
   public:
 
-    static void reset(void);
+    // explicitely specialized in FSM_INITIAL_STATE macro
+    static void set_initial_state();
 
-    static void start(void) {
-      F::reset();
+    static void reset() { };
+
+    static void enter() {
       current_state_ptr->entry();
+    }
+
+    static void start() {
+      set_initial_state();
+      enter();
     }
 
     template<typename E>
@@ -113,27 +121,8 @@ namespace tinyfsm
       current_state_ptr->react(event);
     }
 
-    static state_ptr_const_t get_current_state(void) {
-      return current_state_ptr;
-    }
 
-    template<typename S>
-    static void set_current_state(void) {
-      current_state_ptr = &state_instance<S>;
-    }
-
-    static void enter(void) {
-      current_state_ptr->entry();
-    }
-
-    template<typename S>
-    static void enter(void) {
-      current_state_ptr = &state_instance<S>;
-      current_state_ptr->entry();
-    }
-
-
-  /// state transition functions (for use in state class)
+  /// state transition functions
   protected:
 
     template<typename S>
@@ -175,12 +164,10 @@ namespace tinyfsm
   template<typename... FF>
   struct FsmList;
 
-  template<>
-  struct FsmList<>
-  {
+  template<> struct FsmList<> {
+    static void set_initial_state() { }
     static void reset() { }
     static void enter() { }
-
     template<typename E>
     static void dispatch(E const &) { }
   };
@@ -188,36 +175,56 @@ namespace tinyfsm
   template<typename F, typename... FF>
   struct FsmList<F, FF...>
   {
+    using fsmtype = Fsm<F>;
+
+    static void set_initial_state() {
+      fsmtype::set_initial_state();
+      FsmList<FF...>::set_initial_state();
+    }
+
     static void reset() {
       F::reset();
       FsmList<FF...>::reset();
     }
 
     static void enter() {
-      F::enter();
+      fsmtype::enter();
       FsmList<FF...>::enter();
     }
 
     static void start() {
-      reset();
+      set_initial_state();
       enter();
     }
 
     template<typename E>
     static void dispatch(E const & event) {
-      F::template dispatch<E>(event);
+      fsmtype::template dispatch<E>(event);
       FsmList<FF...>::template dispatch<E>(event);
+    }
+  };
+
+  // --------------------------------------------------------------------------
+
+  template<typename... SS> struct StateList;
+  template<> struct StateList<> {
+    static void reset() { }
+  };
+  template<typename S, typename... SS>
+  struct StateList<S, SS...>
+  {
+    static void reset() {
+      state_instance<S> = S();
+      StateList<SS...>::reset();
     }
   };
 } /* namespace tinyfsm */
 
 
-#define FSM_INITIAL_STATE(_FSM, _STATE)          \
-namespace tinyfsm {                              \
-  template<> void Fsm< _FSM >::reset(void) {     \
-    set_current_state< _STATE >();               \
-  }                                              \
-}
+#define FSM_INITIAL_STATE(_FSM, _STATE)                               \
+  template<> void tinyfsm::Fsm< _FSM >::set_initial_state(void) {     \
+    current_state_ptr = &state_instance< _STATE >;                    \
+  }
 
 
 #endif /* TINYFSM_HPP_INCLUDED */

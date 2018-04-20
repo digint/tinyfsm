@@ -10,6 +10,7 @@ Class Diagram
     +--------------------------------------:  T  :
     | tinyfsm::FsmList                     :.....:
     +-----------------------------------------|
+    | [+] set_initial_state()     <<static>>  |
     | [+] reset()                 <<static>>  |
     | [+] enter()                 <<static>>  |
     | [+] start()                 <<static>>  |
@@ -21,16 +22,15 @@ Class Diagram
     +--------------------------------------:  T  :
     | tinyfsm::Fsm                         :.....:
     +-----------------------------------------|
+    | [+] state<S>()              <<static>>  |
+    | [+] set_initial_state()     <<static>>  |
     | [+] reset()                 <<static>>  |
+    | [+] enter()                 <<static>>  |
     | [+] start()                 <<static>>  |
     | [+] dispatch(Event)         <<static>>  |
-    | [+] get_current_state()     <<static>>  |
-    | [+] set_current_state<S>()  <<static>>  |
-    | [+] enter()                 <<static>>  |
-    | [+] enter<S>()              <<static>>  |
-    | [#] transit<S>()                        |
-    | [#] transit<S>(Action)                  |
-    | [#] transit<S>(Action, Condition)       |
+    | [+] transit<S>()                        |
+    | [+] transit<S>(Action)                  |
+    | [+] transit<S>(Action, Condition)       |
     +-----------------------------------------+
                          #
                          |
@@ -58,20 +58,42 @@ Class Diagram
     [-]  private
 
 
-template< typename F > class Fsm
---------------------------------
+template< typename F > struct Fsm
+---------------------------------
+
+
+### State Machine Functions
+
+- `template< typename S > static constexpr S const & state(void)`
+
+  Returns a reference to state S.
+
+
+- `static void set_initial_state(void)`
+
+  Function prototype, must be defined (explicit template
+  specialization) for every state machine class (e.g. by using the
+  `FSM_INITIAL_STATE(fsm, state`) macro). Sets current state to
+  initial (start) state.
+
 
 - `static void reset(void)`
 
-  Function prototype, must be defined (template specialization) for
-  every state machine class (e.g. by using the `FSM_INITIAL_STATE(fsm,
-  state`) macro). Must at least call `set_current_state<S>()`.
+  Empty function, can be overridden by state machine class in order to
+  perform custom initialization (e.g. set static state machine
+  variables, or reset states using `StateList<MyStates...>::reset()`).
+  Note that this function is NOT called on start().
+
+
+- `static void enter(void)`
+
+  Helper function, usually not needed to be used directly:
+  calls entry() method of current state.
 
 
 - `static void start()`
 
-  1. Calls reset() method of the state machine class F.
-  2. Calls entry() method of the current (initial) state.
+  Sets the initial (start) state and calls its entry() method.
 
 
 - `template< typename E > static void dispatch(E const &)`
@@ -79,31 +101,7 @@ template< typename F > class Fsm
   Dispatch an event to the current state of this state machine.
 
 
-- `static F const * get_current_state(void)`
-
-  Returns a pointer to the current state.
-
-
-- `template< typename S > static void set_current_state(void)`
-
-  Set current state to S (helper function for use in definition of
-  reset()).
-
-
-- `static void enter(void)`
-
-  Helper function used by FsmList<>, should not be used directly:
-  calls entry() method of current state.
-
-
-- `template< typename S > static void enter(void)`
-
-  Helper function, useful for bypassing FSM logic (should not be
-  needed in properly designed FSM's):
-
-  1. Set current state to S
-  2. Call entry() method on S
-
+### State Transition Functions
 
 - `template< typename S > void transit(void)`
 
@@ -133,20 +131,24 @@ template< typename F > class Fsm
 template< typename... FF > FsmList
 ----------------------------------
 
+- `static void set_initial_state(void)`
+
+  Calls set_initial_state() on all state machines in the list.
+
 - `static void reset()`
 
-  Calls reset() function of all the state machines in the list.
+  Calls reset() on all state machines in the list.
 
 
 - `static void enter()`
 
-  Calls enter() function of all the state machines in the list.
+  Calls enter() on all state machines in the list.
 
 
 - `static void start()`
 
-  1. Calls reset() function of all the state machines in the list.
-  2. Calls enter() function of all the state machines in the list.
+  Sets the initial (start) state for all state machines in list, then
+  call all entry() methods.
 
 
 - `template< typename E > static void dispatch(E const &)`
