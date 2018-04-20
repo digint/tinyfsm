@@ -47,49 +47,7 @@ namespace tinyfsm
 
   // --------------------------------------------------------------------------
 
-  template<typename... FF>
-  struct FsmList;
-
-  template<>
-  struct FsmList<>
-  {
-    static void reset() { }
-    static void enter() { }
-
-    template<typename E>
-    static void dispatch(E const &) { }
-  };
-
-  template<typename F, typename... FF>
-  struct FsmList<F, FF...>
-  {
-    static void reset() {
-      F::reset();
-      FsmList<FF...>::reset();
-    }
-
-    static void enter() {
-      F::enter();
-      FsmList<FF...>::enter();
-    }
-
-    static void start() {
-      reset();
-      enter();
-    }
-
-    template<typename E>
-    static void dispatch(E const & event) {
-      F::template dispatch<E>(event);
-      FsmList<FF...>::template dispatch<E>(event);
-    }
-  };
-
-  // --------------------------------------------------------------------------
-
-  struct Event { };     /* Event base class  */
-
-  // --------------------------------------------------------------------------
+  struct Event { };
 
   namespace experimental
   {
@@ -133,7 +91,7 @@ namespace tinyfsm
 
   // --------------------------------------------------------------------------
 
-  template<typename F>     /* FSM base class  */
+  template<typename F>
   class Fsm
   {
     typedef F *       state_ptr_t;
@@ -226,6 +184,45 @@ namespace tinyfsm
   template<typename F>
   typename Fsm<F>::state_ptr_t Fsm<F>::current_state;
 
+  // --------------------------------------------------------------------------
+
+  template<typename... FF>
+  struct FsmList;
+
+  template<>
+  struct FsmList<>
+  {
+    static void reset() { }
+    static void enter() { }
+
+    template<typename E>
+    static void dispatch(E const &) { }
+  };
+
+  template<typename F, typename... FF>
+  struct FsmList<F, FF...>
+  {
+    static void reset() {
+      F::reset();
+      FsmList<FF...>::reset();
+    }
+
+    static void enter() {
+      F::enter();
+      FsmList<FF...>::enter();
+    }
+
+    static void start() {
+      reset();
+      enter();
+    }
+
+    template<typename E>
+    static void dispatch(E const & event) {
+      F::template dispatch<E>(event);
+      FsmList<FF...>::template dispatch<E>(event);
+    }
+  };
 } /* namespace tinyfsm */
 
 
