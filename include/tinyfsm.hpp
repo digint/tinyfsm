@@ -97,11 +97,6 @@ namespace tinyfsm
       return state_instance<S>;
     }
 
-    template<typename S>
-    static constexpr state_ptr_t state_ptr(void) {
-      return &state_instance<S>;
-    }
-
 
   /// state machine functions (should not be used in state class)
   public:
@@ -124,7 +119,7 @@ namespace tinyfsm
 
     template<typename S>
     static void set_current_state(void) {
-      current_state_ptr = state_ptr<S>();
+      current_state_ptr = &state_instance<S>;
     }
 
     static void enter(void) {
@@ -133,7 +128,7 @@ namespace tinyfsm
 
     template<typename S>
     static void enter(void) {
-      current_state_ptr = state_ptr<S>();
+      current_state_ptr = &state_instance<S>;
       current_state_ptr->entry();
     }
 
@@ -144,7 +139,7 @@ namespace tinyfsm
     template<typename S>
     void transit(void) {
       current_state_ptr->exit();
-      current_state_ptr = state_ptr<S>();
+      current_state_ptr = &state_instance<S>;
       current_state_ptr->entry();
     }
 
@@ -157,7 +152,7 @@ namespace tinyfsm
       // NOTE: we get into deep trouble if the action_function sends a new event.
       // TODO: implement a mechanism to check for reentrancy
       action_function();
-      current_state_ptr = state_ptr<S>();
+      current_state_ptr = &state_instance<S>;
       current_state_ptr->entry();
     }
 
