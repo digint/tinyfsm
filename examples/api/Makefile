@@ -41,6 +41,11 @@ CXXFLAGS    += -Wshadow -Wcast-qual -Wcast-align -pedantic
 #OPTIMIZER  = -Og
 #FLAGS     += -g
 
+# Use LLVM
+#CXX = $(CROSS)clang++
+#CXXFLAGS  += -stdlib=libc++
+#LDFLAGS   += -lc++
+
 
 .PHONY: all clean
 

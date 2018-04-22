@@ -57,6 +57,11 @@ LDFLAGS     += -fno-rtti
 #OPTIMIZER  = -Og
 #FLAGS     += -g
 
+# Use LLVM
+#CXX = $(CROSS)clang++
+#CXXFLAGS  += -stdlib=libc++ -fPIC
+#LDFLAGS   += -lc++
+
 # Enable link-time optimizer
 #CXXFLAGS += -flto
 #LDFLAGS  += -flto
