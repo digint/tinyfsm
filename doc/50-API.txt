@@ -28,9 +28,9 @@ Class Diagram
     | [+] enter()                 <<static>>  |
     | [+] start()                 <<static>>  |
     | [+] dispatch(Event)         <<static>>  |
-    | [+] transit<S>()                        |
-    | [+] transit<S>(Action)                  |
-    | [+] transit<S>(Action, Condition)       |
+    | [#] transit<S>()                        |
+    | [#] transit<S>(Action)                  |
+    | [#] transit<S>(Action, Condition)       |
     +-----------------------------------------+
                          #
                          |
@@ -64,9 +64,10 @@ template< typename F > struct Fsm
 
 ### State Machine Functions
 
-- `template< typename S > static constexpr S const & state(void)`
+- `template< typename S > static constexpr S & state(void)`
 
-  Returns a reference to state S.
+  Returns a reference to a (implicitly instantiated) state S. Allows
+  low-level access to all states;
 
 
 - `static void set_initial_state(void)`
@@ -81,7 +82,9 @@ template< typename F > struct Fsm
 
   Empty function, can be overridden by state machine class in order to
   perform custom initialization (e.g. set static state machine
-  variables, or reset states using `StateList<MyStates...>::reset()`).
+  variables, or reset states using `StateList<MyStates...>::reset()`)
+  or directly via the `state<MyState>()` instance).
+
   Note that this function is NOT called on start().
 
 

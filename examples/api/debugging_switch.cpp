@@ -1,5 +1,6 @@
 #include "../../include/tinyfsm.hpp"
 #include <iostream>
+#include <cassert>
 
 struct Off; // forward declaration
 
@@ -23,18 +24,18 @@ struct Switch
   // "Off" nor "On" (see operator=() below).
   Switch() : counter(0) {
     std::cout << "* Switch()" << std::endl
-              << "  this              = " << this << std::endl;
+              << "  this          = " << this << std::endl;
   }
 
   ~Switch() {
     std::cout << "* ~Switch()" << std::endl
-              << "  this              = " << this << std::endl;
+              << "  this          = " << this << std::endl;
   }
 
   Switch & operator=(const Switch & other) {
     std::cout << "* operator=()" << std::endl
-              << "  this              = " << this << std::endl
-              << "  other             = " << &other << std::endl;
+              << "  this          = " << this << std::endl
+              << "  other         = " << &other << std::endl;
     counter = other.counter;
     return *this;
   }
@@ -66,23 +67,24 @@ void Switch::reset() {
 
 void Switch::entry() {
   counter++;
-  std::cout << "* entry()" << std::endl
-            << "  this              = " << this << std::endl
-            << "  current_state_ptr = " << current_state_ptr << std::endl
-            << "  state_ptr<On>     = " << &state<On>()  << std::endl
-            << "  state_ptr<Off>    = " << &state<Off>() << std::endl
-            << "  on_counter  = " << state<On>().counter  << std::endl
-            << "  off_counter = " << state<Off>().counter << std::endl;
+
+  // debugging only. properly designed state machines don't need this:
+  if(is_in_state<On>())       { std::cout << "* On::entry()"  << std::endl; }
+  else if(is_in_state<Off>()) { std::cout << "* Off::entry()" << std::endl; }
+  else assert(true);
+
+  assert(current_state_ptr == this);
+  std::cout << "  this (cur)    = " << this << std::endl
+            << "  state<On>     = " << &state<On>()  << std::endl
+            << "  state<Off>    = " << &state<Off>() << std::endl;
 }
 
 void Switch::exit() {
+  assert(current_state_ptr == this);
   std::cout << "* exit()" << std::endl
-            << "  this              = " << this << std::endl
-            << "  current_state_ptr = " << current_state_ptr << std::endl
-            << "  state_ptr<On>     = " << &state<On>()  << std::endl
-            << "  state_ptr<Off>    = " << &state<Off>() << std::endl
-            << "  on_counter  = " << state<On>().counter  << std::endl
-            << "  off_counter = " << state<Off>().counter << std::endl;
+            << "  this (cur)    = " << this << std::endl
+            << "  state<On>     = " << &state<On>()  << std::endl
+            << "  state<Off>    = " << &state<Off>() << std::endl;
 }
 
 
@@ -96,6 +98,11 @@ int main()
   while(1)
   {
     char c;
+    std::cout << "* main()" << std::endl
+              << "  cur_counter   = " << Switch::current_state_ptr->counter  << std::endl
+              << "  on_counter    = " << Switch::state<On>().counter  << std::endl
+              << "  off_counter   = " << Switch::state<Off>().counter << std::endl;
+
     std::cout << std::endl << "t=Toggle, r=Restart, q=Quit ? ";
     std::cin >> c;
     switch(c) {

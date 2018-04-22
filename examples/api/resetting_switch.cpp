@@ -16,8 +16,9 @@ struct Toggle : tinyfsm::Event { };
 class Switch
 : public tinyfsm::Fsm<Switch>
 {
-public:
-  static void reset(void);   /* implemented below */
+  // entry(), exit() and react() are called from Fsm<Switch>::transit()
+  // in derived states, make friends:
+  friend class tinyfsm::Fsm<Switch>;
 
   /* default reaction for unhandled events */
   void react(tinyfsm::Event const &) { };
@@ -25,6 +26,9 @@ public:
   virtual void react(Toggle const &) { };
   virtual void entry(void) { };  /* entry actions in some states */
   void         exit(void)  { };  /* no exit actions */
+
+public:
+  static void reset(void);   /* implemented below */
 };
 
 
@@ -34,30 +38,35 @@ public:
 class On
 : public Switch
 {
-public:
-  On() : counter(0) { std::cout << "** RESET State=On" << std::endl; }
   void entry() override { counter++; std::cout << "* Switch is ON, counter=" << counter << std::endl; };
   void react(Toggle const &) override { transit<Off>(); };
-private:
   int counter;
+
+public:
+  On() : counter(0) { std::cout << "** RESET State=On" << std::endl; }
 };
 
 class Off
 : public Switch
 {
-public:
-  Off() : counter(0) { std::cout << "** RESET State=Off" << std::endl; }
   void entry() override { counter++; std::cout << "* Switch is OFF, counter=" << counter << std::endl; };
   void react(Toggle const &) override { transit<On>(); };
-private:
   int counter;
+
+public:
+  Off() : counter(0) { std::cout << "** RESET State=Off" << std::endl; }
 };
 
 
 void Switch::reset() {
   std::cout << "** RESET Switch" << std::endl;
-  // reset all states (calls constructor on all states in list)
+  // Reset all states (calls constructor on all states in list)
   tinyfsm::StateList<Off, On>::reset();
+
+  // Alternatively, make counter public above and reset the values
+  // here instead of using a copy-constructor with StateList<>:
+  //state<On>().counter = 0;
+  //state<Off>().counter = 0;
 }
 
 FSM_INITIAL_STATE(Switch, Off)

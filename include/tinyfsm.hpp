@@ -92,11 +92,17 @@ namespace tinyfsm
 
     static state_ptr_t current_state_ptr;
 
+    // public, leaving ability to access state instance (e.g. on reset)
     template<typename S>
-    static constexpr S const & state(void) {
+    static constexpr S & state(void) {
       static_assert(std::is_same< fsmtype, typename S::fsmtype >::value,
                     "accessing state of different state machine");
       return state_instance<S>;
+    }
+
+    template<typename S>
+    static constexpr bool is_in_state(void) {
+      return current_state_ptr == &state_instance<S>;
     }
 
   /// state machine functions
