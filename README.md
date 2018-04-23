@@ -61,8 +61,7 @@ want to support me you can do so:
 Development
 -----------
 
-The source code for TinyFSM is managed using Git. Check out the
-source repository like this:
+The source code for TinyFSM is managed using Git:
 
     git clone https://dev.tty0.ch/tinyfsm.git
 
