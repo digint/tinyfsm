@@ -49,32 +49,6 @@ namespace tinyfsm
 
   struct Event { };
 
-  namespace experimental
-  {
-    /**
-     * Event which is bound to a Fsm or FsmList class. A BoundEvent
-     * implements non-template dispatch() function, which will send
-     * the event instance to the specified Fsm or FsmList.
-     *
-     * NOTE: If BoundEvent is used, forward declaration for all events
-     * are needed in front of the Fsm declaration. This is because
-     * BoundEvent<FsmList> introduces circular dependency to
-     * the Fsm<> class (which is again part of the FsmList<> template
-     * parameter).
-     *
-     * NOTE: BoundEvent uses static_cast<>, which can have ugly
-     * side-effects if not used correctly!
-     */
-    template<typename E, typename L>
-    struct BoundEvent
-    : public Event
-    {
-      void dispatch() {
-        L::template dispatch<E>(static_cast<E const &>(*this));
-      }
-    };
-  } /* namespace experimental */
-
   // --------------------------------------------------------------------------
 
   template<typename S>
