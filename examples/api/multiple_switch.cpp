@@ -6,7 +6,7 @@
 // This is a bit cumbersome, as the C++ syntax is really ugly when it
 // comes to derived template classes.
 //
-#include "../../include/tinyfsm.hpp"
+#include <tinyfsm.hpp>
 #include <iostream>
 #include <stdlib.h> /* rand */
 

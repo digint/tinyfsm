@@ -1,4 +1,4 @@
-#include "../../include/tinyfsm.hpp"
+#include <tinyfsm.hpp>
 #include <iostream>
 
 class Off; // forward declaration
