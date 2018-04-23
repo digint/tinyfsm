@@ -61,16 +61,15 @@ Class Diagram
 template< typename F > struct Fsm
 ---------------------------------
 
-
 ### State Machine Functions
 
-- `template< typename S > static constexpr S & state(void)`
+ * `template< typename S > static constexpr S & state(void)`
 
   Returns a reference to a (implicitly instantiated) state S. Allows
   low-level access to all states;
 
 
-- `static void set_initial_state(void)`
+ * `static void set_initial_state(void)`
 
   Function prototype, must be defined (explicit template
   specialization) for every state machine class (e.g. by using the
@@ -78,7 +77,7 @@ template< typename F > struct Fsm
   initial (start) state.
 
 
-- `static void reset(void)`
+ * `static void reset(void)`
 
   Empty function, can be overridden by state machine class in order to
   perform custom initialization (e.g. set static state machine
@@ -88,25 +87,25 @@ template< typename F > struct Fsm
   Note that this function is NOT called on start().
 
 
-- `static void enter(void)`
+ * `static void enter(void)`
 
   Helper function, usually not needed to be used directly:
   calls entry() method of current state.
 
 
-- `static void start()`
+ * `static void start()`
 
   Sets the initial (start) state and calls its entry() method.
 
 
-- `template< typename E > static void dispatch(E const &)`
+ * `template< typename E > static void dispatch(E const &)`
 
   Dispatch an event to the current state of this state machine.
 
 
 ### State Transition Functions
 
-- `template< typename S > void transit(void)`
+ * `template< typename S > void transit(void)`
 
   Transit to a new state:
 
@@ -115,7 +114,7 @@ template< typename F > struct Fsm
   3. Call entry() method on new state
 
 
-- `template< typename S, typename ActionFunction > void transit(ActionFunction)`
+ * `template< typename S, typename ActionFunction > void transit(ActionFunction)`
 
   Transit to a new state, with action function:
 
@@ -125,7 +124,7 @@ template< typename F > struct Fsm
   4. Call entry() method on new state
 
 
-- `template< typename S, typename ActionFunction, typename ConditionFunction > void transit(ActionFunction, ConditionFunction)`
+ * `template< typename S, typename ActionFunction, typename ConditionFunction > void transit(ActionFunction, ConditionFunction)`
 
   Calls ConditionFunction. If it returns true, calls
   `transit<S>(ActionFunction)`.
@@ -134,27 +133,28 @@ template< typename F > struct Fsm
 template< typename... FF > FsmList
 ----------------------------------
 
-- `static void set_initial_state(void)`
+ * `static void set_initial_state(void)`
 
   Calls set_initial_state() on all state machines in the list.
 
-- `static void reset()`
+
+ * `static void reset()`
 
   Calls reset() on all state machines in the list.
 
 
-- `static void enter()`
+ * `static void enter()`
 
   Calls enter() on all state machines in the list.
 
 
-- `static void start()`
+ * `static void start()`
 
   Sets the initial (start) state for all state machines in list, then
   call all entry() methods.
 
 
-- `template< typename E > static void dispatch(E const &)`
+ * `template< typename E > static void dispatch(E const &)`
 
   Dispatch an event to the current state of all the state machines in
   the list.

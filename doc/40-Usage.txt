@@ -38,8 +38,8 @@ state machine itself.
 
 You need to declare the following public members:
 
-- react() method for each event
-- entry() and exit() methods
+ - react() method for each event
+ - entry() and exit() methods
 
 Example:
 
@@ -106,9 +106,9 @@ defines the code directly in the declaration.
 In most cases, event reactions consist of one or more of the following
 steps:
 
-- Change some local data
-- Send events to other state machines
-- Transit to different state
+ - Change some local data
+ - Send events to other state machines
+ - Transit to different state
 
 **Important**:
 Make sure that the `transit<>()` function call is the last command
@@ -144,10 +144,10 @@ Example:
 In this example, we use a lambda function as transition action. The
 `transit<>()` method does the following:
 
-1. Call the exit() method of the current state
-2. Call the the transition action if provided
-3. Change the current state to the new state
-4. Call the entry() method of the new state
+ 1. Call the exit() method of the current state
+ 2. Call the the transition action if provided
+ 3. Change the current state to the new state
+ 4. Call the entry() method of the new state
 
 Note that you can also pass condition functions to the `transit<>()`
 method.
