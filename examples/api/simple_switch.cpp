@@ -1,7 +1,7 @@
 #include <tinyfsm.hpp>
 #include <iostream>
 
-class Off; // forward declaration
+struct Off; // forward declaration
 
 
 // ----------------------------------------------------------------------------
@@ -13,31 +13,31 @@ struct Toggle : tinyfsm::Event { };
 // ----------------------------------------------------------------------------
 // 2. State Machine Base Class Declaration
 //
-class Switch
-: public tinyfsm::Fsm<Switch>
+struct Switch : tinyfsm::Fsm<Switch>
 {
-public:
-  /* default reaction for unhandled events */
-  void react(tinyfsm::Event const &) { };
-
   virtual void react(Toggle const &) { };
+
+  // alternative: enforce handling of Toggle in all states (pure virtual)
+  //virtual void react(Toggle const &) = 0;
+
   virtual void entry(void) { };  /* entry actions in some states */
   void         exit(void)  { };  /* no exit actions */
+
+  // alternative: enforce entry actions in all states (pure virtual)
+  //virtual void entry(void) = 0;
 };
 
 
 // ----------------------------------------------------------------------------
 // 3. State Declarations
 //
-class On
-: public Switch
+struct On : Switch
 {
   void entry() override { std::cout << "* Switch is ON" << std::endl; };
   void react(Toggle const &) override { transit<Off>(); };
 };
 
-class Off
-: public Switch
+struct Off : Switch
 {
   void entry() override { std::cout << "* Switch is OFF" << std::endl; };
   void react(Toggle const &) override { transit<On>(); };
