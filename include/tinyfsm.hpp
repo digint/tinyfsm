@@ -200,6 +200,26 @@ namespace tinyfsm
       StateList<SS...>::reset();
     }
   };
+
+  // --------------------------------------------------------------------------
+
+  template<typename F>
+  struct MooreMachine : tinyfsm::Fsm<F>
+  {
+    virtual void entry(void) { };  /* entry actions in some states */
+    void exit(void)  { };          /* no exit actions */
+  };
+
+  template<typename F>
+  struct MealyMachine : tinyfsm::Fsm<F>
+  {
+    // input actions are modeled in react():
+    // - conditional dependent of event type or payload
+    // - transit<>(ActionFunction)
+    void entry(void) { };  /* no entry actions */
+    void exit(void)  { };  /* no exit actions */
+  };
+
 } /* namespace tinyfsm */
 
 
