@@ -73,6 +73,8 @@ int main()
     case 't':
       std::cout << "> Toggling switch..." << std::endl;
       fsm_handle::dispatch(toggle);
+      // alternative: instantiating causes no overhead (empty declaration)
+      //fsm_handle::dispatch(Toggle());
       break;
     case 'q':
       return 0;

@@ -85,8 +85,6 @@ using fsm_handle = Switch;
 //
 int main()
 {
-  Toggle toggle;
-
   fsm_handle::start();
 
   while(1)
@@ -97,7 +95,7 @@ int main()
     switch(c) {
     case 't':
       std::cout << "> Toggling switch..." << std::endl;
-      fsm_handle::dispatch(toggle);
+      fsm_handle::dispatch(Toggle());
       break;
     case 'r':
       fsm_handle::reset();

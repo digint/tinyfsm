@@ -117,7 +117,6 @@ void ToggleSingle() {
 //
 int main()
 {
-  Toggle toggle;
   fsm_handle::start();
 
   while(1)
@@ -131,7 +130,7 @@ int main()
     case '2': ToggleSingle<2>(); break;
     case 'a':
       std::cout << "> Toggling all switches..." << std::endl;
-      fsm_handle::dispatch(toggle);
+      fsm_handle::dispatch(Toggle());
       break;
     case 'r':
       fsm_handle::reset();
