@@ -1,7 +1,7 @@
 /*
  * TinyFSM - Tiny Finite State Machine Processor
  *
- * Copyright (c) 2012-2017 Axel Burri
+ * Copyright (c) 2012-2018 Axel Burri
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
