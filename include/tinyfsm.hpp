@@ -54,7 +54,15 @@ namespace tinyfsm
   // --------------------------------------------------------------------------
 
   template<typename S>
-  S state_instance{};
+  struct _state_instance
+  {
+    using value_type = S;
+    using type = _state_instance<S>;
+    static S value;
+  };
+
+  template<typename S>
+  typename _state_instance<S>::value_type _state_instance<S>::value;
 
   // --------------------------------------------------------------------------
 
@@ -73,12 +81,12 @@ namespace tinyfsm
     static constexpr S & state(void) {
       static_assert(std::is_same< fsmtype, typename S::fsmtype >::value,
                     "accessing state of different state machine");
-      return state_instance<S>;
+      return _state_instance<S>::value;
     }
 
     template<typename S>
     static constexpr bool is_in_state(void) {
-      return current_state_ptr == &state_instance<S>;
+      return current_state_ptr == &_state_instance<S>::value;
     }
 
   /// state machine functions
@@ -110,7 +118,7 @@ namespace tinyfsm
     template<typename S>
     void transit(void) {
       current_state_ptr->exit();
-      current_state_ptr = &state_instance<S>;
+      current_state_ptr = &_state_instance<S>::value;
       current_state_ptr->entry();
     }
 
@@ -123,7 +131,7 @@ namespace tinyfsm
       // NOTE: we get into deep trouble if the action_function sends a new event.
       // TODO: implement a mechanism to check for reentrancy
       action_function();
-      current_state_ptr = &state_instance<S>;
+      current_state_ptr = &_state_instance<S>::value;
       current_state_ptr->entry();
     }
 
@@ -196,7 +204,7 @@ namespace tinyfsm
   struct StateList<S, SS...>
   {
     static void reset() {
-      state_instance<S> = S();
+      _state_instance<S>::value = S();
       StateList<SS...>::reset();
     }
   };
@@ -225,7 +233,7 @@ namespace tinyfsm
 
 #define FSM_INITIAL_STATE(_FSM, _STATE)                               \
   template<> void tinyfsm::Fsm< _FSM >::set_initial_state(void) {     \
-    current_state_ptr = &state_instance< _STATE >;                    \
+    current_state_ptr = &_state_instance< _STATE >::value;            \
   }
 
 

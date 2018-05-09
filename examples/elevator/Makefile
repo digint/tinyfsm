@@ -1,5 +1,5 @@
-# Compiler prefix, in case your default compiler does not implement all c++14 features:
-#CROSS = /opt/toolchain/x86_64-pc-linux-gnu-gcc-5.0.0/bin/x86_64-pc-linux-gnu-
+# Compiler prefix, in case your default compiler does not implement all C++11 features:
+#CROSS = /opt/toolchain/x86_64-pc-linux-gnu-gcc-4.7.0/bin/x86_64-pc-linux-gnu-
 
 PROJECT      = elevator
 
@@ -41,7 +41,7 @@ FLAGS       += -MMD
 
 CXXFLAGS     = $(FLAGS)
 CXXFLAGS    += $(OPTIMIZER)
-CXXFLAGS    += -std=c++14
+CXXFLAGS    += -std=c++11
 CXXFLAGS    += -fno-exceptions
 CXXFLAGS    += -fno-rtti
 

@@ -11,9 +11,8 @@ your source files:
 Prerequisites
 -------------
 
-As of TinyFSM-v0.3.0, TinyFSM requires a compiler supporting the C++14
-language standard ("-std=c++14" in gcc). Earlier versions depend on
-C++11.
+TinyFSM requires a compiler supporting the C++11 language standard
+("-std=c++11" in gcc).
 
 
 Building the Elevator Example
