@@ -12,8 +12,7 @@ The examples in the documentation below are mainly based on the
 "Elevator Project" example.
 
 
-1. Declare Events
------------------
+###  1. Declare Events
 
 Declare events that your state machine will listen to. Events are
 classes derived from the tinyfsm::Event class.
@@ -36,8 +35,7 @@ which is used to specify the floor number on "Call" and "FloorSensors"
 events.
 
 
-2. Declare the State Machine Class
-----------------------------------
+###  2. Declare the State Machine Class
 
 Declare your state machine class. State machines are classes derived
 from the tinyfsm::Fsm template class, where T is the type name of the
@@ -74,8 +72,7 @@ faster when dispatching the "Alarm" event, since no vtable lookup is
 needed.
 
 
-3. Declare the States
----------------------
+###  3. Declare the States
 
 Declare the states of your state machine. States are classes derived
 from the state machine class.
@@ -111,8 +108,7 @@ example source code does not declare the states separately, but rather
 defines the code directly in the declaration.
 
 
-4. Implement Actions and Event Reactions
-----------------------------------------
+###  4. Implement Actions and Event Reactions
 
 In most cases, event reactions consist of one or more of the following
 steps:
@@ -164,8 +160,7 @@ Note that you can also pass condition functions to the `transit<>()`
 function.
 
 
-5. Define the Initial State
----------------------------
+###  5. Define the Initial State
 
 Use the macro `FSM_INITIAL_STATE(fsm, state)` for defining the initial
 state (or "start state") of your state machine:
@@ -180,8 +175,7 @@ More specifially, it defines a template specialization for
 Idle.
 
 
-6. Define Custom Initialization
--------------------------------
+###  6. Define Custom Initialization
 
 If you need to perform custom initialization, you can override the
 reset() member function in your state machine class. If you are using
@@ -204,8 +198,7 @@ Make sure to always set the current state, or you'll end up with a
 null pointer dereference.
 
 
-7. Use FsmList for Event Dispatching
-------------------------------------
+###  7. Use FsmList for Event Dispatching
 
 You might have noticed some calls to a send_event() function in the
 example above. This is NOT a function provided with TinyFSM. Since

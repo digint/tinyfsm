@@ -72,17 +72,17 @@ If we really had to work around this, we could either:
 
  1. Change the initialization (bad design practice!) in main.cpp:
 
-    - fsm_list::start();
-    + fsm_list::set_initial_state();
-    + Elevator::enter();
+        - fsm_list::start();
+        + fsm_list::set_initial_state();
+        + Elevator::enter();
 
 
  2. Modify the Motor:Stopped->entry() function in motor.cpp:
 
-      class Stopped : public Motor {
-        void entry() override {
-    +     if(direction == 0)
-    +       return;
-          cout << "Motor: stopped" << endl;
-          direction = 0;
-        };
+          class Stopped : public Motor {
+            void entry() override {
+        +     if(direction == 0)
+        +       return;
+              cout << "Motor: stopped" << endl;
+              direction = 0;
+            };
