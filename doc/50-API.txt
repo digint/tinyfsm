@@ -58,8 +58,8 @@ Class Diagram
     [-]  private
 
 
-template< typename F > struct Fsm
----------------------------------
+template< typename F > class Fsm
+--------------------------------
 
 ### State Machine Functions
 
@@ -161,8 +161,8 @@ Mealy state machines do not have entry/exit actions:
 type or payload and using `transit<>(ActionFunction)`.
 
 
-template< typename... FF > FsmList
-----------------------------------
+template< typename... FF > struct FsmList
+-----------------------------------------
 
  * `static void set_initial_state(void)`
 
@@ -189,3 +189,11 @@ template< typename... FF > FsmList
 
   Dispatch an event to the current state of all the state machines in
   the list.
+
+
+template< typename... SS > struct StateList
+-------------------------------------------
+
+ * `static void reset(void)`
+
+  Re-instantiate all states in the list, using copy-constructor.

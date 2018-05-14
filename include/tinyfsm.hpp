@@ -215,7 +215,7 @@ namespace tinyfsm
   struct MooreMachine : tinyfsm::Fsm<F>
   {
     virtual void entry(void) { };  /* entry actions in some states */
-    void exit(void)  { };          /* no exit actions */
+    void exit(void) { };           /* no exit actions */
   };
 
   template<typename F>
@@ -225,7 +225,7 @@ namespace tinyfsm
     // - conditional dependent of event type or payload
     // - transit<>(ActionFunction)
     void entry(void) { };  /* no entry actions */
-    void exit(void)  { };  /* no exit actions */
+    void exit(void) { };   /* no exit actions */
   };
 
 } /* namespace tinyfsm */
