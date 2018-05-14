@@ -130,6 +130,37 @@ template< typename F > struct Fsm
   `transit<S>(ActionFunction)`.
 
 
+### Derived Classes
+
+#### template< typename F > class MooreMachine
+
+Moore state machines have entry actions, but no exit actions:
+
+ * `virtual void entry(void) { }`
+
+  Entry action, not enforcing. Can be enforced by declaring pure
+  virtual: `virtual void entry(void) = 0`
+
+ * `void exit(void) { }`
+
+  No exit actions.
+
+#### template< typename F > class MealyMachine
+
+Mealy state machines do not have entry/exit actions:
+
+ * `void entry(void) { }`
+
+  No entry actions.
+
+ * `void exit(void) { }`
+
+  No exit actions.
+
+*Input actions* are modeled in react(), conditional dependent of event
+type or payload and using `transit<>(ActionFunction)`.
+
+
 template< typename... FF > FsmList
 ----------------------------------
 
