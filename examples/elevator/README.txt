@@ -65,8 +65,7 @@ If we really had to work around this, we could either:
  1. Change the initialization (bad design practice!) in main.cpp:
 
     - fsm_list::start();
-    + Motor::reset();
-    + Elevator::reset();
+    + fsm_list::set_initial_state();
     + Elevator::enter();
 
 
