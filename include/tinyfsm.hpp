@@ -25,7 +25,7 @@
 /* ---------------------------------------------------------------------
  * Version: 0.2.0
  *
- * API documentation: see "../doc/50-API.txt"
+ * API documentation: see "../doc/50-API.md"
  *
  * The official TinyFSM website is located at:
  * https://digint.ch/tinyfsm/
