@@ -1,3 +1,11 @@
+Elevator Project
+================
+
+Example implementation of a simplified elevator logic, using [TinyFSM].
+
+  [TinyFSM]: https://digint.ch/tinyfsm/
+
+
 Overview
 --------
 

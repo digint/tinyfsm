@@ -86,6 +86,7 @@ template< typename F > class Fsm
 
   Note that this function is NOT called on start().
 
+  See example: `/examples/api/resetting_switch.cpp`
 
  * `static void enter(void)`
 
@@ -145,6 +146,8 @@ Moore state machines have entry actions, but no exit actions:
 
   No exit actions.
 
+See example: `/examples/api/more_machine.cpp`
+
 #### template< typename F > class MealyMachine
 
 Mealy state machines do not have entry/exit actions:
@@ -159,6 +162,8 @@ Mealy state machines do not have entry/exit actions:
 
 *Input actions* are modeled in react(), conditional dependent of event
 type or payload and using `transit<>(ActionFunction)`.
+
+See example: `/examples/api/mealy_machine.cpp`
 
 
 template< typename... FF > struct FsmList
@@ -197,3 +202,5 @@ template< typename... SS > struct StateList
  * `static void reset(void)`
 
   Re-instantiate all states in the list, using copy-constructor.
+
+  See example: `/examples/api/resetting_switch.cpp`

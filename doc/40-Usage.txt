@@ -1,8 +1,15 @@
 Usage
 =====
 
-This chapter explains how to use TinyFSM, mainly based on the
-"elevator" example provided with the TinyFSM package.
+Refer to the [API examples](/examples/api/) provided with the TinyFSM
+package for a quick overview. Recommended starting points:
+
+ - [Simple Switch](/examples/api/simple_switch.cpp)
+ - [Moore Machine](/examples/api/moore_machine.cpp)
+ - [Elevator Project](/examples/elevator/)
+
+The examples in the documentation below are mainly based on the
+"Elevator Project" example.
 
 
 1. Declare Events
@@ -72,6 +79,10 @@ needed.
 
 Declare the states of your state machine. States are classes derived
 from the state machine class.
+
+Note that state classes are *implicitly instantiated*. If you want to
+reuse states in multiple state machines, you need to declare them as
+templates (see `/examples/api/multiple_switch.cpp`).
 
 Example:
 
