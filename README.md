@@ -8,7 +8,7 @@ programmer to fully understand what is happening behind the scenes. It
 provides a straightforward way of mapping your state machine charts
 into source code.
 
-TinyFSM basically wraps event dispatching into method calls, making
+TinyFSM basically wraps event dispatching into function calls, making
 event dispatching equally fast to calling (or even inlining) a
 function. Even in the worst case, dispatching leads to nothing more
 than a single vtable lookup and function call!

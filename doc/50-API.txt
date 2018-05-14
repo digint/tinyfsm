@@ -91,12 +91,12 @@ template< typename F > class Fsm
  * `static void enter(void)`
 
   Helper function, usually not needed to be used directly:
-  calls entry() method of current state.
+  calls entry() function of current state.
 
 
  * `static void start()`
 
-  Sets the initial (start) state and calls its entry() method.
+  Sets the initial (start) state and calls its entry() function.
 
 
  * `template< typename E > static void dispatch(E const &)`
@@ -110,19 +110,19 @@ template< typename F > class Fsm
 
   Transit to a new state:
 
-  1. Call exit() method on current state
+  1. Call exit() function on current state
   2. Set new current state to S
-  3. Call entry() method on new state
+  3. Call entry() function on new state
 
 
  * `template< typename S, typename ActionFunction > void transit(ActionFunction)`
 
   Transit to a new state, with action function:
 
-  1. Call exit() method on current state
+  1. Call exit() function on current state
   2. Call ActionFunction
   3. Set new current state to S
-  4. Call entry() method on new state
+  4. Call entry() function on new state
 
 
  * `template< typename S, typename ActionFunction, typename ConditionFunction > void transit(ActionFunction, ConditionFunction)`
@@ -187,7 +187,7 @@ template< typename... FF > struct FsmList
  * `static void start()`
 
   Sets the initial (start) state for all state machines in list, then
-  call all entry() methods.
+  call all entry() functions.
 
 
  * `template< typename E > static void dispatch(E const &)`

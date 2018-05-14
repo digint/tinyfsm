@@ -45,8 +45,8 @@ state machine itself.
 
 You need to declare the following public members:
 
- - react() method for each event
- - entry() and exit() methods
+ - react() function for each event
+ - entry() and exit() functions
 
 Example:
 
@@ -66,9 +66,9 @@ Example:
     };
 
 
-Note that you are free to declare the methods non-virtual if you
+Note that you are free to declare the functions non-virtual if you
 like. This has implications on the execution speed: In the example
-above, the react(Alarm) method is declared non-virtual, as all states
+above, the react(Alarm) function is declared non-virtual, as all states
 share the same reaction for this event. This makes code execution
 faster when dispatching the "Alarm" event, since no vtable lookup is
 needed.
@@ -123,7 +123,7 @@ steps:
 
 **Important**:
 Make sure that the `transit<>()` function call is the last command
-executed within a reaction method!
+executed within a reaction function!
 
 **Important**:
 Don't use `transit<>()` in entry/exit actions!
@@ -153,15 +153,15 @@ Example:
 
 
 In this example, we use a lambda function as transition action. The
-`transit<>()` method does the following:
+`transit<>()` function does the following:
 
- 1. Call the exit() method of the current state
+ 1. Call the exit() function of the current state
  2. Call the the transition action if provided
  3. Change the current state to the new state
- 4. Call the entry() method of the new state
+ 4. Call the entry() function of the new state
 
 Note that you can also pass condition functions to the `transit<>()`
-method.
+function.
 
 
 5. Define the Initial State
@@ -213,7 +213,7 @@ event dispatching can be implemented in several ways, TinyFSM leaves
 this open to you. The "elevator" example implements the send_event()
 function as *direct event dispatching*, without using event
 queues. This has the advantage that execution is much faster, since no
-RTTI is needed and the decision which method to call for an event
+RTTI is needed and the decision which function to call for an event
 class is made at compile-time. On the other hand, special care has to
 be taken when designing the state machines, in order to avoid loops.
 
