@@ -1,3 +1,15 @@
+tinyfsm-0.3.0
+
+  * Bugfix: set initial state on all state machines before entering
+    states in FsmList::start().
+  * Add Fsm::start() function (identical interface as FsmList).
+  * Add reset() functionality to Fsm and FsmList class.
+  * Add MooreMachine and MealyMachine class.
+  * Add API examples: simple_switch, resetting_switch, multiple_switch,
+    debugging_switch, mealy_machine, moore_machine.
+  * Relax access specifiers for Fsm::state<S>() access function.
+  * Remove debug code.
+
 tinyfsm-0.2.0
 
   * Use Fsm<F>::initialize() for initialization (instead of
