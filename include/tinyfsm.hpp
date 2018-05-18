@@ -232,9 +232,10 @@ namespace tinyfsm
 
 
 #define FSM_INITIAL_STATE(_FSM, _STATE)                               \
-  template<> void tinyfsm::Fsm< _FSM >::set_initial_state(void) {     \
+namespace tinyfsm {                                                   \
+  template<> void Fsm< _FSM >::set_initial_state(void) {              \
     current_state_ptr = &_state_instance< _STATE >::value;            \
-  }
-
+  }                                                                   \
+}
 
 #endif /* TINYFSM_HPP_INCLUDED */
