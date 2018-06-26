@@ -57,7 +57,6 @@ Now we simulate a sensor defect:
     Motor: moving down
     c=Call, f=FloorSensor, a=Alarm, q=Quit ? f
     Floor ? 2
-    Reached floor 2
     Floor sensor defect (expected 1, got 2)
     *** calling maintenance ***
     Motor: stopped
