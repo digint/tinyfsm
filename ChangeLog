@@ -1,3 +1,8 @@
+tinyfsm-0.3.1
+
+  * Bugfix (workaround) for compiler bug in gcc < 7.0: define template
+    specialization for FSM_INITIAL_STATE in "namespace tinyfsm" block.
+
 tinyfsm-0.3.0
 
   * Bugfix: set initial state on all state machines before entering
