@@ -44,18 +44,19 @@ class Moving
 : public Elevator
 {
   void react(FloorSensor const & e) override {
-    cout << "Reached floor " << e.floor << endl;
-
     int floor_expected = current_floor + Motor::getDirection();
     if(floor_expected != e.floor)
     {
       cout << "Floor sensor defect (expected " << floor_expected << ", got " << e.floor << ")" << endl;
       transit<Panic>(CallMaintenance);
     }
-
-    current_floor = e.floor;
-    if(e.floor == dest_floor)
-      transit<Idle>();
+    else
+    {
+      cout << "Reached floor " << e.floor << endl;
+      current_floor = e.floor;
+      if(e.floor == dest_floor)
+        transit<Idle>();
+    }
   };
 };
 
