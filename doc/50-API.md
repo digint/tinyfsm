@@ -127,8 +127,8 @@ template< typename F > class Fsm
 
  * `template< typename S, typename ActionFunction, typename ConditionFunction > void transit(ActionFunction, ConditionFunction)`
 
-   Calls ConditionFunction. If it returns true, calls
-   `transit<S>(ActionFunction)`.
+   Transit to a new state only if ConditionFunction returns true.
+   Shortcut for: `if(ConditionFunction()) transit<S>(ActionFunction);`.
 
 
 ### Derived Classes

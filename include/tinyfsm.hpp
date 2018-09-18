@@ -88,6 +88,7 @@ namespace tinyfsm
 
     template<typename S>
     static constexpr bool is_in_state(void) {
+      static_assert(is_same_fsm<F, S>::value, "accessing state of different state machine");
       return current_state_ptr == &_state_instance<S>::value;
     }
 
@@ -119,6 +120,7 @@ namespace tinyfsm
 
     template<typename S>
     void transit(void) {
+      static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
       current_state_ptr->exit();
       current_state_ptr = &_state_instance<S>::value;
       current_state_ptr->entry();
@@ -126,9 +128,7 @@ namespace tinyfsm
 
     template<typename S, typename ActionFunction>
     void transit(ActionFunction action_function) {
-      static_assert(std::is_void<typename std::result_of<ActionFunction()>::type >::value,
-                    "result type of 'action_function()' is not 'void'");
-
+      static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
       current_state_ptr->exit();
       // NOTE: we get into deep trouble if the action_function sends a new event.
       // TODO: implement a mechanism to check for reentrancy
@@ -139,9 +139,6 @@ namespace tinyfsm
 
     template<typename S, typename ActionFunction, typename ConditionFunction>
     void transit(ActionFunction action_function, ConditionFunction condition_function) {
-      static_assert(std::is_same<typename std::result_of<ConditionFunction()>::type, bool>::value,
-                    "result type of 'condition_function()' is not 'bool'");
-
       if(condition_function()) {
         transit<S>(action_function);
       }
