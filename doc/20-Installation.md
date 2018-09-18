@@ -14,6 +14,12 @@ Prerequisites
 TinyFSM requires a compiler supporting the C++11 language standard
 ("-std=c++11" in gcc).
 
+TinyFSM does not depend on RTTI, exceptions or any external library.
+If you need to compile without standard libraries (e.g. in conjunction
+with `-nostdlib` linker option), add `-DTINYFSM_NOSTDLIB` to the
+compiler options: this removes all dependencies on the standard
+library by disabling some compile-time type checks.
+
 
 Building the Elevator Example
 -----------------------------

@@ -38,7 +38,9 @@
 #ifndef TINYFSM_HPP_INCLUDED
 #define TINYFSM_HPP_INCLUDED
 
+#ifndef TINYFSM_NOSTDLIB
 #include <type_traits>
+#endif
 
 // #include <iostream>
 // #define DBG(str) do { std::cerr << str << std::endl; } while( false )
@@ -53,8 +55,18 @@ namespace tinyfsm
 
   // --------------------------------------------------------------------------
 
+#ifdef TINYFSM_NOSTDLIB
+  // remove dependency on standard library (silent fail!).
+  // useful in conjunction with -nostdlib option, e.g. if your compiler
+  // does not provide a standard library.
+  // NOTE: this silently disables all static_assert() calls below!
+  template<typename F, typename S>
+  struct is_same_fsm { static constexpr bool value = true; };
+#else
+  // check if both fsm and state class share same fsmtype
   template<typename F, typename S>
   struct is_same_fsm : std::is_same< typename F::fsmtype, typename S::fsmtype > { };
+#endif
 
   template<typename S>
   struct _state_instance
