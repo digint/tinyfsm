@@ -53,6 +53,9 @@ namespace tinyfsm
 
   // --------------------------------------------------------------------------
 
+  template<typename F, typename S>
+  struct is_same_fsm : std::is_same< typename F::fsmtype, typename S::fsmtype > { };
+
   template<typename S>
   struct _state_instance
   {
@@ -79,8 +82,7 @@ namespace tinyfsm
     // public, leaving ability to access state instance (e.g. on reset)
     template<typename S>
     static constexpr S & state(void) {
-      static_assert(std::is_same< fsmtype, typename S::fsmtype >::value,
-                    "accessing state of different state machine");
+      static_assert(is_same_fsm<F, S>::value, "accessing state of different state machine");
       return _state_instance<S>::value;
     }
 
