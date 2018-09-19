@@ -1,3 +1,9 @@
+tinyfsm-0.3.2
+
+  * Add TINYFSM_NOSTDLIB compile option.
+  * Remove static asserts on transit functions.
+  * Fix elevator example.
+
 tinyfsm-0.3.1
 
   * Bugfix (workaround) for compiler bug in gcc < 7.0: define template
