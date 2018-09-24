@@ -8,6 +8,18 @@ package for a quick overview. Recommended starting points:
  - [Moore Machine](/examples/api/moore_machine.cpp)
  - [Elevator Project](/examples/elevator/)
 
+For an example in an RTOS environment, see the [stm32f103stk-demo] of
+the [OpenMPTL] project. Starting points:
+
+ - [screen.hpp](https://github.com/digint/openmptl/tree/master/projects/stm32f103stk-demo/src/screen.hpp)
+   : TinyFSM declarations.
+ - [kernel.cpp](https://github.com/digint/openmptl/tree/master/projects/stm32f103stk-demo/src/kernel.cpp)
+   : Poll input and trigger events.
+
+  [OpenMPTL]: https://digint.ch/openmptl/
+  [stm32f103stk-demo]: https://github.com/digint/openmptl/tree/master/projects/stm32f103stk-demo
+
+
 The examples in the documentation below are mainly based on the
 "Elevator Project" example.
 
