@@ -1,0 +1,3 @@
+# ignore files for "git archive"
+.gitattributes export-ignore
+.gitignore export-ignore
