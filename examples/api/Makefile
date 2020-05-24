@@ -35,7 +35,7 @@ CXXFLAGS    += -fno-rtti
 CXXFLAGS    += -Wall -Wextra
 CXXFLAGS    += -Wctor-dtor-privacy
 CXXFLAGS    += -Wcast-align -Wpointer-arith -Wredundant-decls
-CXXFLAGS    += -Wshadow -Wcast-qual -Wcast-align -pedantic
+CXXFLAGS    += -Wshadow -Wcast-qual -Wcast-align -pedantic -Wnon-virtual-dtor
 
 # Produce debugging information (for use with gdb)
 #OPTIMIZER  = -Og

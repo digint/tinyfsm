@@ -224,6 +224,17 @@ namespace tinyfsm
   template<typename F>
   struct MooreMachine : tinyfsm::Fsm<F>
   {
+    // On the one hand giving an object a virtual destructor means it
+    // will have a vtable and therefore consume 4 (or 8 on 64 bit
+    // machines) additional bytes per-object for the vptr.
+    //
+    // For a class not intended to delete through a pointer to it,
+    // there is no reason whatsoever to have a virtual destructor. It
+    // would not only waste resources, but more importantly it would
+    // give users a wrong hint.
+    //
+    //virtual ~MooreMachine() noexcept = default;
+
     virtual void entry(void) { };  /* entry actions in some states */
     void exit(void) { };           /* no exit actions */
   };

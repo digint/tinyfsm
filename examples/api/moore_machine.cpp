@@ -14,6 +14,10 @@ struct Switch : tinyfsm::MooreMachine<Switch>
 {
   /* pure virtual reaction (override required in all states) */
   virtual void react(Toggle const &) = 0;
+
+//  ~Switch() {
+//    std::cout << "* ~Switch()" << std::endl;
+//  }
 };
 
 
