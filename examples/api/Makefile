@@ -6,7 +6,7 @@ OPTIMIZER    = -Os
 
 CC           = $(CROSS)gcc
 CXX          = $(CROSS)g++
-SIZE         = size -B -d
+SIZE         = size -d
 RM           = rm -f
 
 SRC_DIRS     = .
