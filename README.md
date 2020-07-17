@@ -46,6 +46,22 @@ Installation
 TinyFSM is a header-only library, no special installation steps are
 needed. Just point your compiler to the "include" directory.
 
+Alternately, you could install the library using cmake. A typical install procedure is:
+```bash
+mkdir build
+cd build
+cmake ..
+sudo cmake --build . --target install
+```
+
+In your project `CMakeLists.txt`, configure this library by including:
+```cmake
+find_package(tinyfsm)
+target_link_libraries(${PROJECT_NAME} tinyfsm)
+```
+
+Hopefully this works on any OS. It should copy the library to the right os-specific location so you can succesfully `#include <tinyfsm.hpp>`. It will also create the cmake specific files that will allow you to use `find_package(tinyfsm)` in your cmake scripts.
+
 
 Donate
 ------
