@@ -1,0 +1,21 @@
+{
+    "name": "tinyfsm",
+    "version": "0.3.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/digint/tinyfsm"
+    },
+    "authors": {
+        "name": "Axel Burri",
+        "email": "axel@tty0.ch",
+        "url": "http://digint.ch"
+    },
+    "license": "MIT",
+    "platforms": "*",
+    "frameworks": "*",
+    "build": {
+        "flags": [
+            "-I include/"
+        ]
+    }
+}
