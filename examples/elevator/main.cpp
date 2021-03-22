@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 
 int main()
 {
@@ -16,27 +14,27 @@ int main()
   {
     char c;
 
-    cout << "c=Call, f=FloorSensor, a=Alarm, q=Quit ? ";
-    cin >> c;
+    std::cout << "c=Call, f=FloorSensor, a=Alarm, q=Quit ? ";
+    std::cin >> c;
     switch(c) {
     case 'c':
-      cout << "Floor ? ";
-      cin >> call.floor;
+      std::cout << "Floor ? ";
+      std::cin >> call.floor;
       send_event(call);
       break;
     case 'f':
-      cout << "Floor ? ";
-      cin >> sensor.floor;
+      std::cout << "Floor ? ";
+      std::cin >> sensor.floor;
       send_event(sensor);
       break;
     case 'a':
       send_event(Alarm());
       break;
     case 'q':
-      cout << "Thanks for playing!" << endl;
+      std::cout << "Thanks for playing!" << std::endl;
       return 0;
     default:
-      cout << "Invalid input" << endl;
+      std::cout << "Invalid input" << std::endl;
     };
   }
 }

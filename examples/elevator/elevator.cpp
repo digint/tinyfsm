@@ -5,8 +5,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 class Idle; // forward declaration
 
 
@@ -15,11 +13,11 @@ class Idle; // forward declaration
 //
 
 static void CallMaintenance() {
-  cout << "*** calling maintenance ***" << endl;
+  std::cout << "*** calling maintenance ***" << std::endl;
 }
 
 static void CallFirefighters() {
-  cout << "*** calling firefighters ***" << endl;
+  std::cout << "*** calling firefighters ***" << std::endl;
 }
 
 
@@ -47,12 +45,12 @@ class Moving
     int floor_expected = current_floor + Motor::getDirection();
     if(floor_expected != e.floor)
     {
-      cout << "Floor sensor defect (expected " << floor_expected << ", got " << e.floor << ")" << endl;
+      std::cout << "Floor sensor defect (expected " << floor_expected << ", got " << e.floor << ")" << std::endl;
       transit<Panic>(CallMaintenance);
     }
     else
     {
-      cout << "Reached floor " << e.floor << endl;
+      std::cout << "Reached floor " << e.floor << std::endl;
       current_floor = e.floor;
       if(e.floor == dest_floor)
         transit<Idle>();
@@ -96,11 +94,11 @@ class Idle
 //
 
 void Elevator::react(Call const &) {
-  cout << "Call event ignored" << endl;
+  std::cout << "Call event ignored" << std::endl;
 }
 
 void Elevator::react(FloorSensor const &) {
-  cout << "FloorSensor event ignored" << endl;
+  std::cout << "FloorSensor event ignored" << std::endl;
 }
 
 void Elevator::react(Alarm const &) {

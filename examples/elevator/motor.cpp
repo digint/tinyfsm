@@ -2,8 +2,6 @@
 #include "motor.hpp"
 #include <iostream>
 
-using namespace std;
-
 
 // ----------------------------------------------------------------------------
 // Motor states
@@ -13,7 +11,7 @@ class Stopped
 : public Motor
 {
   void entry() override {
-    cout << "Motor: stopped" << endl;
+    std::cout << "Motor: stopped" << std::endl;
     direction = 0;
   };
 };
@@ -22,7 +20,7 @@ class Up
 : public Motor
 {
   void entry() override {
-    cout << "Motor: moving up" << endl;
+    std::cout << "Motor: moving up" << std::endl;
     direction = 1;
   };
 };
@@ -31,7 +29,7 @@ class Down
 : public Motor
 {
   void entry() override {
-    cout << "Motor: moving down" << endl;
+    std::cout << "Motor: moving down" << std::endl;
     direction = -1;
   };
 };
