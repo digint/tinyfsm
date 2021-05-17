@@ -8,14 +8,14 @@
 // Event declarations
 //
 
-struct FloorEvent : tinyfsm::Event
+struct FloorEvent
 {
   int floor;
 };
 
 struct Call        : FloorEvent { };
 struct FloorSensor : FloorEvent { };
-struct Alarm       : tinyfsm::Event { };
+struct Alarm       { };
 
 
 

@@ -23,7 +23,7 @@
  */
 
 /* ---------------------------------------------------------------------
- * Version: 0.3.2
+ * Version: 0.4.0
  *
  * API documentation: see "../doc/50-API.md"
  *
@@ -32,14 +32,25 @@
  *
  * Author:
  * Axel Burri <axel@tty0.ch>
+ * incloon
  * ---------------------------------------------------------------------
  */
 
 #ifndef TINYFSM_HPP_INCLUDED
 #define TINYFSM_HPP_INCLUDED
 
-#ifndef TINYFSM_NOSTDLIB
 #include <type_traits>
+#include <utility>
+
+//#define TINYFSM_ENABLE_MULTIDISPATCH
+
+#ifndef TINYFSM_ENABLE_MULTIDISPATCH
+#define DISPATCH_TIMES_ASSERT(__TIMES) static_assert(__TIMES == 1, "Invalid dispatch")
+#else
+#ifndef TINYFSM_MAX_DISPATCH_TIMES
+#define TINYFSM_MAX_DISPATCH_TIMES  3
+#endif
+#define DISPATCH_TIMES_ASSERT(__TIMES) static_assert(__TIMES <= TINYFSM_MAX_DISPATCH_TIMES, "Invalid dispatch")
 #endif
 
 // #include <iostream>
@@ -55,18 +66,65 @@ namespace tinyfsm
 
   // --------------------------------------------------------------------------
 
-#ifdef TINYFSM_NOSTDLIB
-  // remove dependency on standard library (silent fail!).
-  // useful in conjunction with -nostdlib option, e.g. if your compiler
-  // does not provide a standard library.
-  // NOTE: this silently disables all static_assert() calls below!
-  template<typename F, typename S>
-  struct is_same_fsm { static constexpr bool value = true; };
-#else
   // check if both fsm and state class share same fsmtype
   template<typename F, typename S>
-  struct is_same_fsm : std::is_same< typename F::fsmtype, typename S::fsmtype > { };
-#endif
+  using is_same_fsm = std::is_same< typename F::fsmtype, typename S::fsmtype >;
+  
+  template <typename T1, typename T2, typename T = void>
+  using __enable_if_is_same_t = typename std::enable_if<std::is_same<T1, T2>::value, T>::type;
+
+
+
+  template <typename S>
+  struct _StateBaseCheck {
+  private:
+    template <typename T, typename = decltype(static_cast<typename T::state_ptr_t>(0)->exit())>
+    static constexpr bool checkExitFunc(T*) { return true; };
+    static constexpr bool checkExitFunc(...) { return false; };
+
+    static_assert(checkExitFunc(static_cast<S*>(0)), "The function exit() must be in state machine base class! ");
+
+    template <typename T, void(T::*)() = &T::initial>
+    static constexpr bool checkIniFunc(T*) { return true; };
+    static constexpr bool checkIniFunc(...) { return false; };
+
+    template <typename T, typename = __enable_if_is_same_t<decltype(static_cast<typename T::state_ptr_t>(0)->exit()), void> >
+    static constexpr bool checkReturn(T*) { return false; };
+    static constexpr bool checkReturn(...) { return true; };
+
+  public:
+    static constexpr bool has_initial = checkIniFunc(static_cast<S*>(0));
+    static constexpr bool has_return = checkReturn(static_cast<S*>(0));
+  };
+  
+  template <typename S, typename... P>
+  struct _StateEntryCheck {
+  private:
+    static constexpr bool assert = _StateBaseCheck<S>::has_return;
+
+    template <typename T, typename = __enable_if_is_same_t<decltype(static_cast<T*>(0)->entry((P&&)(*static_cast<typename std::remove_reference<P>::type*>(0))...)), void> >
+    static constexpr bool checkEntry(T*) { return true; };
+    static constexpr bool checkEntry(...) { return false; };
+
+  public:
+    typedef _StateBaseCheck<S> SBC;
+
+    static constexpr bool has_entry = checkEntry(static_cast<S*>(0));
+  };
+
+  template <typename F, typename E>
+  struct _EventCheck {
+  private:
+    template <typename T, typename = __enable_if_is_same_t<decltype(static_cast<T*>(0)->react((E&&)(*static_cast<typename std::remove_reference<E>::type*>(0)))), void> >
+    static constexpr bool checkEvent(T*) { return true; };
+    static constexpr bool checkEvent(...) { return false; };
+
+  public:
+    static constexpr bool valid = checkEvent(static_cast<F*>(0));
+    template<typename InferenceTrigger = void> static inline typename std::enable_if<valid, InferenceTrigger>::type dispatch(E&& event) { F::fsmtype::template dispatch<E>(std::forward<E>(event)); }
+    template<typename InferenceTrigger = void> static inline typename std::enable_if<!valid, InferenceTrigger>::type dispatch(E&& event) {}
+  };
+  // --------------------------------------------------------------------------
 
   template<typename S>
   struct _state_instance
@@ -78,6 +136,14 @@ namespace tinyfsm
 
   template<typename S>
   typename _state_instance<S>::value_type _state_instance<S>::value;
+
+  template<typename S>
+  struct _IniState
+  {
+    static_assert(_StateEntryCheck<S>::has_entry || _StateBaseCheck<S>::has_initial, "No entry function! The initial state of the state machine should have entry() or initial()");
+    template<typename InferenceTrigger = void> static inline typename std::enable_if<_StateBaseCheck<S>::has_initial, InferenceTrigger>::type enter() { _state_instance<S>::value.initial(); }
+    template<typename InferenceTrigger = void> static inline typename std::enable_if<!_StateBaseCheck<S>::has_initial, InferenceTrigger>::type enter() { _state_instance<S>::value.entry(); }
+  };
 
   // --------------------------------------------------------------------------
 
@@ -112,53 +178,93 @@ namespace tinyfsm
 
     static void reset() { };
 
-    static void enter() {
-      current_state_ptr->entry();
-    }
-
     static void start() {
       set_initial_state();
-      enter();
     }
 
     template<typename E>
-    static void dispatch(E const & event) {
-      current_state_ptr->react(event);
+    static void dispatch(E&& event) {
+      static_assert(_EventCheck<F, E>::valid, "The dispatched event is not in the state machine");
+      current_state_ptr->react(std::forward<E>(event));
     }
 
 
   /// state transition functions
   protected:
+	template <typename S>
+    typename std::enable_if<!_StateBaseCheck<S>::has_return>::type transit(void) {
+      static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
+      static_assert(_StateEntryCheck<S>::has_entry, "There is no function entry() in the current state");
+      current_state_ptr->exit();
+      current_state_ptr = &_state_instance<S>::value;
+      _state_instance<S>::value.entry();
+    }
 
-    template<typename S>
-    void transit(void) {
+	template <typename S>
+    typename std::enable_if<_StateBaseCheck<S>::has_return>::type transit(void) {
+	  static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
+      static_assert(_StateEntryCheck<S, decltype(static_cast<F*>(0)->exit())>::has_entry, "There is no function entry(exit()) in the current state");
+	  auto&& transdata = current_state_ptr->exit();
+	  current_state_ptr = &_state_instance<S>::value;
+      _state_instance<S>::value.entry(std::move(transdata));
+	}
+    
+    template <typename S, typename T>
+    typename std::enable_if<_StateEntryCheck<S, T>::has_entry>::type transit(T&& data) {
       static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
       current_state_ptr->exit();
       current_state_ptr = &_state_instance<S>::value;
-      current_state_ptr->entry();
+      _state_instance<S>::value.entry(std::forward<T>(data));
     }
 
-    template<typename S, typename ActionFunction>
-    void transit(ActionFunction action_function) {
+	template <typename S, typename ActionFunction>
+    typename std::enable_if<!_StateEntryCheck<S, ActionFunction>::has_entry && !_StateBaseCheck<S>::has_return>::type transit(ActionFunction action_function) {
       static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
+      static_assert(_StateEntryCheck<S>::has_entry, "There is no function entry() in the current state");
+      static_assert(decltype(action_function(),true)(true), "");
       current_state_ptr->exit();
       // NOTE: we get into deep trouble if the action_function sends a new event.
       // TODO: implement a mechanism to check for reentrancy
       action_function();
       current_state_ptr = &_state_instance<S>::value;
-      current_state_ptr->entry();
+      _state_instance<S>::value.entry();
     }
 
-    template<typename S, typename ActionFunction, typename ConditionFunction>
-    void transit(ActionFunction action_function, ConditionFunction condition_function) {
-      if(condition_function()) {
-        transit<S>(action_function);
-      }
+	template <typename S, typename ActionFunction>
+    typename std::enable_if<!_StateEntryCheck<S, ActionFunction>::has_entry && _StateBaseCheck<S>::has_return>::type transit(ActionFunction action_function) {
+      static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
+      static_assert(_StateEntryCheck<S, decltype(static_cast<F*>(0)->exit())>::has_entry, "There is no function entry(exit()) in the current state");
+      static_assert(decltype(action_function(), true)(true), "");
+	  auto &&transdata = current_state_ptr->exit();
+      // NOTE: we get into deep trouble if the action_function sends a new event.
+      // TODO: implement a mechanism to check for reentrancy
+      action_function();
+      current_state_ptr = &_state_instance<S>::value;
+      _state_instance<S>::value.entry(std::move(transdata));
     }
+	
+    template <typename S, typename T, typename ActionFunction>
+    void transit(T&& data, ActionFunction action_function) {
+      static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
+      static_assert(_StateEntryCheck<S, T>::has_entry, "There is no function entry(data) in the current state");
+      static_assert(decltype(action_function(), true)(true), "");
+      current_state_ptr->exit();
+      // NOTE: we get into deep trouble if the action_function sends a new event.
+      // TODO: implement a mechanism to check for reentrancy
+      action_function();
+      current_state_ptr = &_state_instance<S>::value;
+      _state_instance<S>::value.entry(std::forward<T>(data));
+    }
+
+  //private:
+  //  static bool transit_lock;
   };
 
   template<typename F>
   typename Fsm<F>::state_ptr_t Fsm<F>::current_state_ptr;
+
+  //template<typename F>
+  //bool Fsm<F>::transit_lock = false;
 
   // --------------------------------------------------------------------------
 
@@ -168,40 +274,34 @@ namespace tinyfsm
   template<> struct FsmList<> {
     static void set_initial_state() { }
     static void reset() { }
-    static void enter() { }
-    template<typename E>
-    static void dispatch(E const &) { }
+    template<typename E, unsigned int dispatch_times>
+    static void dispatch(E&&) {
+      static_assert(dispatch_times, "Invalid dispatch"); 
+      DISPATCH_TIMES_ASSERT(dispatch_times);
+    }
   };
 
   template<typename F, typename... FF>
   struct FsmList<F, FF...>
   {
-    using fsmtype = Fsm<F>;
-
     static void set_initial_state() {
-      fsmtype::set_initial_state();
+      F::fsmtype::set_initial_state();
       FsmList<FF...>::set_initial_state();
     }
 
     static void reset() {
-      F::reset();
+      F::fsmtype::reset();
       FsmList<FF...>::reset();
-    }
-
-    static void enter() {
-      fsmtype::enter();
-      FsmList<FF...>::enter();
     }
 
     static void start() {
       set_initial_state();
-      enter();
     }
 
-    template<typename E>
-    static void dispatch(E const & event) {
-      fsmtype::template dispatch<E>(event);
-      FsmList<FF...>::template dispatch<E>(event);
+    template<typename E, unsigned int dispatch_times = 0>
+    static void dispatch(E&& event) {
+      _EventCheck<F, E>::dispatch(std::forward<E>(event));
+      FsmList<FF...>::template dispatch<E, dispatch_times + (_EventCheck<F, E>::valid ? 1 : 0)>(std::forward<E>(event));
     }
   };
 
@@ -246,6 +346,7 @@ namespace tinyfsm
 namespace tinyfsm {                                                   \
   template<> void Fsm< _FSM >::set_initial_state(void) {              \
     current_state_ptr = &_state_instance< _STATE >::value;            \
+    _IniState< _STATE >::enter();                                     \
   }                                                                   \
 }
 

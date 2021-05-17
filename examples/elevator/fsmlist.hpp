@@ -10,9 +10,9 @@ using fsm_list = tinyfsm::FsmList<Motor, Elevator>;
 
 /** dispatch event to both "Motor" and "Elevator" */
 template<typename E>
-void send_event(E const & event)
+void send_event(E&& event)
 {
-  fsm_list::template dispatch<E>(event);
+  fsm_list::template dispatch<E>(std::forward<E>(event));
 }
 
 

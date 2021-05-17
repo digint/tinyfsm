@@ -8,9 +8,9 @@
 // Event declarations
 //
 
-struct MotorUp   : tinyfsm::Event { };
-struct MotorDown : tinyfsm::Event { };
-struct MotorStop : tinyfsm::Event { };
+struct MotorUp   {};
+struct MotorDown {};
+struct MotorStop {};
 
 
 // ----------------------------------------------------------------------------

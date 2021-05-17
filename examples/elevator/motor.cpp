@@ -1,4 +1,3 @@
-#include <tinyfsm.hpp>
 #include "motor.hpp"
 #include <iostream>
 
@@ -7,7 +6,7 @@
 // Motor states
 //
 
-class Stopped
+struct Stopped
 : public Motor
 {
   void entry() override {
@@ -16,7 +15,7 @@ class Stopped
   };
 };
 
-class Up
+struct Up
 : public Motor
 {
   void entry() override {
@@ -25,7 +24,7 @@ class Up
   };
 };
 
-class Down
+struct Down
 : public Motor
 {
   void entry() override {
