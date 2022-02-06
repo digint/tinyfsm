@@ -18,6 +18,7 @@ RM_R         = rm -rf
 CP           = cp
 MKDIR_P      = mkdir -p
 DOXYGEN      = doxygen
+DOT          = dot
 
 
 SRC_DIRS     = .
@@ -26,6 +27,8 @@ INCLUDE      = -I ../../include
 SRCS         = $(wildcard $(addsuffix /*.cpp, $(SRC_DIRS)))
 OBJS         = $(SRCS:.cpp=.o)
 DEPENDS      = $(OBJS:.o=.d)
+DOT_FILES    = $(wildcard $(addsuffix /*.dot, $(SRC_DIRS)))
+PNG_FILES    = $(DOT_FILES:.dot=.png)
 
 EXE          = $(PROJECT)
 MAP          = $(PROJECT).map
@@ -80,7 +83,7 @@ LDFLAGS     += -fno-rtti
 
 .PHONY: all clean
 
-all: $(EXE)
+all: $(EXE) $(PNG_FILES)
 
 $(EXE): $(OBJS)
 	$(LD) $(OBJS) $(LDFLAGS) -o $(EXE)
@@ -88,6 +91,9 @@ $(EXE): $(OBJS)
 
 %.o: %.cpp
 	$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+%.png: %.dot
+	$(DOT) -Tpng $^ -o $@
 
 clean:
 	$(RM) *.o

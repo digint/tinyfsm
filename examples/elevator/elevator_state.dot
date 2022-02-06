@@ -1,0 +1,13 @@
+digraph "G" {
+	// Colour palette from https://venngage.com/blog/color-blind-friendly-palette/
+
+	"Idle" -> "Idle" [label="Call" color="#601A4A" fontcolor="#601A4A"]
+	"Idle" -> "Moving" [label="Call" color="#601A4A" fontcolor="#601A4A"]
+	"Idle" -> "Panic" [label="Alarm" color="#EE442F" fontcolor="#EE442F"]
+
+	"Moving" -> "Panic" [label="FloorSensor" color="#63ACBE" fontcolor="#63ACBE"]
+	"Moving" -> "Idle" [label="FloorSensor" color="#63ACBE" fontcolor="#63ACBE"]
+
+	"Panic" -> "Panic" [label="Alarm" color="#EE442F" fontcolor="#EE442F"]
+
+}
