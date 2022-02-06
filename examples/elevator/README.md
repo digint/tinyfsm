@@ -28,11 +28,14 @@ each other:
     - State: Moving
     - State: Panic
 
+![Elevator states](./elevator_state.png)
+
  2. Motor
     - State: Stopped
     - State: Up
     - State: Down
 
+![Machine states](./machine_state.png)
 
 A good state machine design avoids circular dependencies at all
 cost: While the elevator sends events to the motor, the motor NEVER
