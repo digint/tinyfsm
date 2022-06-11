@@ -1,3 +1,9 @@
+tinyfsm-0.3.3
+
+  * Remove size -B option in makefiles (unsupported on mac).
+  * Add library.json for PlatformIO.
+  * Tidy elevator example.
+
 tinyfsm-0.3.2
 
   * Add TINYFSM_NOSTDLIB compile option.
