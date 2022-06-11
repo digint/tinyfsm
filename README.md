@@ -32,19 +32,38 @@ Official home page: <https://digint.ch/tinyfsm>
 Current version: `0.3.2`
 
 
-Documentation
--------------
-
-You can find the main documentation in the `doc/` directory of the
-TinyFSM project. The latest version is also available
-[online](https://digint.ch/tinyfsm/doc/introduction.html).
-
-
 Installation
 ------------
 
 TinyFSM is a header-only library, no special installation steps are
 needed. Just point your compiler to the "include" directory.
+
+
+Documentation
+-------------
+
+You can find the full documentation in the `doc/` directory:
+
+ - [Introduction](/doc/10-Introduction.md)
+ - [Installation](/doc/20-Installation.md)
+ - [Concepts](/doc/30-Concepts.md)
+ - [Usage](/doc/40-Usage.md)
+ - [API](/doc/50-API.md)
+
+The docmentation is also available on the [official home
+page](https://digint.ch/tinyfsm/doc/introduction.html).
+
+
+### Code examples
+
+ - [Elevator Project]: Documented example, two state machines with
+   shiny buttons, floor sensors and actors.
+ - [Simple Switch]: A generic switch with two states (on/off).
+ - [API examples]
+
+  [Elevator Project]: /examples/elevator/
+  [Simple Switch]:    /examples/api/simple_switch.cpp
+  [API Examples]:     /examples/api/
 
 
 Donate
