@@ -52,8 +52,8 @@ Donate
 
 So TinyFSM has proven useful for you?
 
-I will definitively continue developing TinyFSM for free, but if you
-want to support me you can do so:
+I will definitively continue to develop TinyFSM for free. If you want
+to support me with a donation, you are welcome to do so!
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QZQE9HY6QHDHS)
 

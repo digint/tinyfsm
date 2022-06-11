@@ -34,8 +34,6 @@ each other:
     - State: Down
 
 
-[insert ascii-art here]
-
 A good state machine design avoids circular dependencies at all
 cost: While the elevator sends events to the motor, the motor NEVER
 sends events to the elevator (top-down only).

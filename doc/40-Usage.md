@@ -4,9 +4,10 @@ Usage
 Refer to the [API examples](/examples/api/) provided with the TinyFSM
 package for a quick overview. Recommended starting points:
 
- - [Simple Switch](/examples/api/simple_switch.cpp)
- - [Moore Machine](/examples/api/moore_machine.cpp)
- - [Elevator Project](/examples/elevator/)
+ - [Elevator Project]: Documented example, two state machines with
+   buttons, floor sensors and actors.
+ - [Simple Switch]: A generic switch with two states (on/off).
+ - [Moore Machine] and [Mealy Machine]: Basic, educational examples.
 
 For an example in an RTOS environment, see the [stm32f103stk-demo] of
 the [OpenMPTL] project. Starting points:
@@ -21,7 +22,12 @@ the [OpenMPTL] project. Starting points:
 
 
 The examples in the documentation below are mainly based on the
-"Elevator Project" example.
+[Elevator Project].
+
+  [Elevator Project]: /examples/elevator/
+  [Simple Switch]:    /examples/api/simple_switch.cpp
+  [Moore Machine]:    /examples/api/moore_machine.cpp
+  [Mealy Machine]:    /examples/api/mealy_machine.cpp
 
 
 ###  1. Declare Events
