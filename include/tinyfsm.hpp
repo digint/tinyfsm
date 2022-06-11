@@ -142,8 +142,7 @@ namespace tinyfsm
     void transit(ActionFunction action_function) {
       static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
       current_state_ptr->exit();
-      // NOTE: we get into deep trouble if the action_function sends a new event.
-      // TODO: implement a mechanism to check for reentrancy
+      // NOTE: do not send events in action_function definisions.
       action_function();
       current_state_ptr = &_state_instance<S>::value;
       current_state_ptr->entry();
