@@ -1,0 +1,15 @@
+digraph "G" {
+	// Colour palette from https://venngage.com/blog/color-blind-friendly-palette/
+
+	"Up" -> "Stopped" [label="MotorStop" color="#F5793A" fontcolor="#F5793A" ]
+	"Down" -> "Stopped" [label="MotorStop" color="#F5793A" fontcolor="#F5793A" ]
+	"Stopped" -> "Stopped" [label="MotorStop" color="#F5793A" fontcolor="#F5793A" ]
+
+	"Up" -> "Up" [label="MotorUp"  color="#A95AA1" fontcolor="#A95AA1" ]
+	"Down" -> "Up" [label="MotorUp" color="#A95AA1" fontcolor="#A95AA1" ]
+	"Stopped" -> "Up" [label="MotorUp" color="#A95AA1" fontcolor="#A95AA1" ]
+
+	"Up" -> "Down" [label="MotorDown" color="#0F2080" fontcolor="#0F2080" ]
+	"Down" -> "Down" [label="MotorDown" color="#0F2080" fontcolor="#0F2080" ]
+	"Stopped" -> "Down" [label="MotorDown" color="#0F2080" fontcolor="#0F2080" ]
+}
